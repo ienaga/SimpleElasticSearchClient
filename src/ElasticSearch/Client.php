@@ -6,82 +6,122 @@ use \SimpleApi\Client as BaseClient;
 
 class Client extends BaseClient
 {
-
-    const HOST = "127.0.0.1";
-    const PORT = "9200";
+    /**
+     * @var null
+     */
+    protected $index = null;
 
     /**
-     * @var Client
+     * @var string
      */
-    private static $singleton = null;
+    protected $type  = "";
+
 
     /**
-     * @return Client
+     * Client constructor.
+     * @param array $config
      */
-    public static function getClient()
-    {
-        if (self::$singleton === null) {
-            self::$singleton = new Client(self::getConfig());
-        }
-        return self::$singleton;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getConfig()
-    {
-        return \Phalcon\DI::getDefault()->get("config")->get("elastica")->toArray();
-    }
-
     public function __construct($config = array())
     {
-
+        parent::__construct($config);
     }
 
     /**
-     * execute multi
-     * @return void
+     * @return null
      */
-    public static function execute()
+    public function getIndex()
     {
-        self::$singleton->multi();
+        return $this->index;
     }
 
     /**
-     * @param  string $database
-     * @param  string $table
-     * @param  array  $record
-     * @return void
+     * @param  string $index
+     * @return $this
      */
-    public static function create($database, $table, $record = array())
+    public function setIndex($index = "")
     {
-        self::getClient()
-            ->setMethod("POST")
-            ->setPath(implode("/",[$database, $table]))
-            ->setParameters($record)
-            ->append();
+        $this->index = $index;
+        return $this;
     }
 
     /**
-     * @param  string $database
-     * @param  string $table
-     * @param  string $query
+     * @return null
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param  string $type
+     * @return $this
+     */
+    public function setType($type = "")
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return Filters
+     */
+    public function createFilters()
+    {
+        return new Filters($this);
+    }
+
+    /**
      * @return array
      */
-    public static function get($database, $table, $query = "_search")
+    public function search()
     {
-        return self::getClient()
-            ->setPath(implode("/",[$database, $table, $query]))
+        return $this
+            ->setMethod("GET")
+            ->setPath(implode("/", [$this->getIndex(), $this->getType(), "_search"]))
             ->send();
     }
 
-
-    public static function update()
+    /**
+     * @return array
+     */
+    public function get()
     {
+        return $this
+            ->setMethod("GET")
+            ->setPath(implode("/",[$this->getIndex(), $this->getType()]))
+            ->send();
     }
 
-    public static function delete()
+    /**
+     * @return array
+     */
+    public function post()
     {
+        return $this
+            ->setMethod("POST")
+            ->setPath(implode("/", [$this->getIndex(), $this->getType()]))
+            ->send();
+    }
+
+    /**
+     * @return array
+     */
+    public function put()
+    {
+        return $this
+            ->setMethod("PUT")
+            ->setPath(implode("/", [$this->getIndex(), $this->getType()]))
+            ->send();
+    }
+
+    /**
+     * @return array
+     */
+    public function delete()
+    {
+        return $this
+            ->setMethod("DELETE")
+            ->setPath(implode("/", [$this->getIndex(), $this->getType()]))
+            ->send();
     }
 }
