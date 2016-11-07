@@ -65,9 +65,17 @@ class Client extends BaseClient
     /**
      * @return Filters
      */
-    public function createFilters()
+    public function createFilter()
     {
-        return new Filters($this);
+        return new Filter($this);
+    }
+
+    /**
+     * @return Queries
+     */
+    public function createQuery()
+    {
+        return new Query($this);
     }
 
     /**

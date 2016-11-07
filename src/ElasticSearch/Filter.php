@@ -2,7 +2,7 @@
 
 namespace SimpleElasticSearch;
 
-class Filters
+class Filter
 {
 
     /**
@@ -43,6 +43,17 @@ class Filters
     /**
      * @param  string $key
      * @param  string $value
+     *  @return $this
+     */
+    public function addOne($key, $value = "")
+    {
+        $this->filters = array("term" => array($key => $value));
+        return $this;
+    }
+
+    /**
+     * @param  string $key
+     * @param  string $value
      * @return $this
      */
     public function addAnd($key, $value = "")
@@ -73,6 +84,7 @@ class Filters
      */
     public function getFilters()
     {
+
         return array("filter" => $this->filters);
     }
 
