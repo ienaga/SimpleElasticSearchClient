@@ -1,0 +1,25 @@
+{
+    "name": "ienaga/simple-elasticsearch-client",
+    "homepage": "https://github.com/ienaga/SimpleElasticSearchClient",
+    "description": "simple ElasticSearch library.",
+    "keywords": [ "ElasticSearch", "aws" ],
+    "type": "library",
+    "license": "MIT",
+    "authors":[
+        {
+            "name": "Toshiyuki Ienaga",
+            "email": "ienaga@tvon.jp"
+        }
+    ],
+    "require": {
+        "ienaga/simple-api-client": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.8.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "SimpleElasticSearch\\": "src/"
+        }
+    }
+}

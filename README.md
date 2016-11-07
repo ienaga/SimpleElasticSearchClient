@@ -1,2 +1,4 @@
-# SimpleElasticsSearchClient
-ElasticsSearch Simple Library for PHP
+# SimpleElasticSearchClient
+ElasticSearch Simple Library for PHP
+
+
