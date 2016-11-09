@@ -15,6 +15,17 @@ class Query
     protected $client = null;
 
     /**
+     * @var int
+     */
+    protected $from = 0;
+
+    /**
+     * @var int
+     */
+    protected $size = 10;
+
+
+    /**
      * Filters constructor.
      * @param Client $client
      */
@@ -40,13 +51,45 @@ class Query
     }
 
     /**
+     * @return int
+     */
+    public function getFrom()
+    {
+        return $this->from;
+    }
+
+    /**
+     * @param int $from
+     */
+    public function setFrom($from = 0)
+    {
+        $this->from = $from;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param int $size
+     */
+    public function setSize($size = 10)
+    {
+        $this->size = $size;
+    }
+
+    /**
      * @param  string $key
      * @param  string $value
      *  @return $this
      */
-    public function addOne($key, $value = "")
+    public function match($key, $value = "")
     {
-        $this->query = array("term" => array($key => $value));
+        $this->query = array("match" => array($key => $value));
         return $this;
     }
 
@@ -55,8 +98,12 @@ class Query
      */
     public function getQuery()
     {
-
-        return array("query" => $this->query);
+        $query = $this->query;
+        return array(
+            "query" => $query,
+            "from"  => $this->getFrom(),
+            "size"  => $this->getSize()
+        );
     }
 
     /**
@@ -64,7 +111,7 @@ class Query
      */
     public function attach()
     {
-        return $this->getClient()->setQuery($this->getQuery());
+        return $this->getClient()->mergeQuery($this->getQuery());
     }
 
 

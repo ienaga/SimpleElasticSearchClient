@@ -16,6 +16,11 @@ class Client extends BaseClient
      */
     protected $type  = "";
 
+    /**
+     * @var string
+     */
+    protected $id = "";
+
 
     /**
      * Client constructor.
@@ -63,7 +68,25 @@ class Client extends BaseClient
     }
 
     /**
-     * @return Filters
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param  string $id
+     * @return $this
+     */
+    public function setId($id = "")
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return Filter
      */
     public function createFilter()
     {
@@ -71,7 +94,7 @@ class Client extends BaseClient
     }
 
     /**
-     * @return Queries
+     * @return Query
      */
     public function createQuery()
     {
@@ -118,7 +141,7 @@ class Client extends BaseClient
     {
         return $this
             ->setMethod("PUT")
-            ->setPath(implode("/", [$this->getIndex(), $this->getType()]))
+            ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId()]))
             ->send();
     }
 
@@ -132,4 +155,5 @@ class Client extends BaseClient
             ->setPath(implode("/", [$this->getIndex(), $this->getType()]))
             ->send();
     }
+
 }

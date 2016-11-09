@@ -16,6 +16,17 @@ class Filter
     protected $client = null;
 
     /**
+     * @var int
+     */
+    protected $from = 0;
+
+    /**
+     * @var int
+     */
+    protected $size = 10;
+
+
+    /**
      * Filters constructor.
      * @param Client $client
      */
@@ -41,13 +52,38 @@ class Filter
     }
 
     /**
-     * @param  string $key
-     * @param  string $value
-     *  @return $this
+     * @return int
      */
-    public function addOne($key, $value = "")
+    public function getFrom()
     {
-        $this->filters = array("term" => array($key => $value));
+        return $this->from;
+    }
+
+    /**
+     * @param  int $from
+     * @return $this
+     */
+    public function setFrom($from = 0)
+    {
+        $this->from = $from;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param  int $size
+     * @return $this
+     */
+    public function setSize($size = 10)
+    {
+        $this->size = $size;
         return $this;
     }
 
@@ -56,26 +92,9 @@ class Filter
      * @param  string $value
      * @return $this
      */
-    public function addAnd($key, $value = "")
+    public function match($key, $value = "")
     {
-        if (!isset($this->filters["and"])) {
-            $this->filters["and"] = array();
-        }
-        $this->filters["and"][] = array("term" => array($key => $value));
-        return $this;
-    }
-
-    /**
-     * @param  string $key
-     * @param  array $values
-     * @return $this
-     */
-    public function addOr($key, $values = array())
-    {
-        if (!isset($this->filters["and"])) {
-            $this->filters["and"] = array();
-        }
-        $this->filters["and"][] = array("terms" => array($key => $values));
+        $this->filters[] = array("term" => array($key => $value));
         return $this;
     }
 
@@ -84,8 +103,18 @@ class Filter
      */
     public function getFilters()
     {
+        $filters = array();
+        if (count($this->filters) > 1) {
+            $filters["and"] = $this->filters;
+        } else {
+            $filters = $this->filters[0];
+        }
 
-        return array("filter" => $this->filters);
+        return array(
+            "filter" => $filters,
+            "from"   => $this->getFrom(),
+            "size"   => $this->getSize()
+        );
     }
 
     /**
@@ -93,7 +122,7 @@ class Filter
      */
     public function attach()
     {
-        return $this->getClient()->setQuery($this->getFilters());
+        return $this->getClient()->mergeQuery($this->getFilters());
     }
 
 }
