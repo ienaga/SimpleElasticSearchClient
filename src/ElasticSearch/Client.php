@@ -4,7 +4,7 @@ namespace SimpleElasticSearch;
 
 use \SimpleApi\Client as BaseClient;
 
-class Client extends BaseClient
+class Client extends BaseClient implements ClientInterface
 {
     /**
      * @var null
@@ -19,7 +19,7 @@ class Client extends BaseClient
     /**
      * @var string
      */
-    protected $id = "";
+    protected $id    = "";
 
 
     /**
