@@ -30,10 +30,11 @@ class Query extends BaseSearch implements QueryInterface
         ];
 
         return array(
-            "query" => $query,
-            "from"  => $this->getFrom(),
-            "size"  => $this->getSize(),
-            "sort"  => $this->getSort()
+            "query"   => $query,
+            "from"    => $this->getFrom(),
+            "size"    => $this->getSize(),
+            "sort"    => $this->getSort(),
+            "_source" => $this->ensureSource()
         );
     }
 

@@ -25,6 +25,11 @@ class BaseSearch implements BaseSearchInterface
      */
     protected $sort = array();
 
+    /**
+     * @var bool
+     */
+    protected $source = true;
+
 
     /**
      * Filters constructor.
@@ -116,4 +121,20 @@ class BaseSearch implements BaseSearchInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
+    public function exceptSource()
+    {
+        $this->source = false;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function ensureSource()
+    {
+        return $this->source;
+    }
 }

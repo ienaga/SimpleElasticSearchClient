@@ -31,10 +31,11 @@ class Filter extends BaseSearch implements FilterInterface
         ];
 
         return array(
-            "filter" => $filters,
-            "from"   => $this->getFrom(),
-            "size"   => $this->getSize(),
-            "sort"   => $this->getSort()
+            "filter"  => $filters,
+            "from"    => $this->getFrom(),
+            "size"    => $this->getSize(),
+            "sort"    => $this->getSort(),
+            "_source" => $this->ensureSource()
         );
     }
 
