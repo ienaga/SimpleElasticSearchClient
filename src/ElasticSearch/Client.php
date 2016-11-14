@@ -21,7 +21,6 @@ class Client extends BaseClient implements ClientInterface
      */
     protected $id    = "";
 
-
     /**
      * Client constructor.
      * @param array $config
@@ -126,7 +125,7 @@ class Client extends BaseClient implements ClientInterface
     /**
      * @return array
      */
-    public function post()
+    public function create()
     {
         return $this
             ->setMethod("POST")
@@ -137,7 +136,7 @@ class Client extends BaseClient implements ClientInterface
     /**
      * @return array
      */
-    public function put()
+    public function update()
     {
         return $this
             ->setMethod("PUT")
