@@ -26,6 +26,11 @@ class Filter extends BaseSearch implements FilterInterface
      */
     public function getFilters()
     {
+        $range = $this->getRange();
+        if (count($range)) {
+            $this->filters = array_merge($this->filters, array(array("range" => $range)));
+        }
+
         $filters = [
             "and" => $this->filters
         ];

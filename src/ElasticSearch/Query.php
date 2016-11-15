@@ -25,6 +25,11 @@ class Query extends BaseSearch implements QueryInterface
      */
     public function getQuery()
     {
+        $range = $this->getRange();
+        if (count($range)) {
+            $this->query = array_merge($this->query, array("range" => $range));
+        }
+
         $query = [
             "and" => $this->query
         ];

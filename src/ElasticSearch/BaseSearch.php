@@ -26,6 +26,11 @@ class BaseSearch implements BaseSearchInterface
     protected $sort = array();
 
     /**
+     * @var array
+     */
+    protected $range = array();
+
+    /**
      * @var bool
      */
     protected $source = true;
@@ -118,6 +123,37 @@ class BaseSearch implements BaseSearchInterface
     public function addSort($key, $sort = "asc")
     {
         $this->sort[] = array($key => array("order" => $sort));
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRange()
+    {
+        return $this->range;
+    }
+
+    /**
+     * @param array $range
+     */
+    public function setRange($range)
+    {
+        $this->range = $range;
+    }
+
+    /**
+     * @param  string $key
+     * @param  mixed  $start
+     * @param  mixed  $end
+     * @return $this
+     */
+    public function addRange($key, $start, $end)
+    {
+        $this->range[$key] = [
+            "from" => $start,
+            "to"   => $end
+        ];
         return $this;
     }
 
