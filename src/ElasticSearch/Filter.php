@@ -2,6 +2,9 @@
 
 namespace SimpleElasticSearch;
 
+require_once __DIR__ . "/FilterInterface.php";
+require_once __DIR__ . "/BaseSearch.php";
+
 class Filter extends BaseSearch implements FilterInterface
 {
 
@@ -35,13 +38,19 @@ class Filter extends BaseSearch implements FilterInterface
             "and" => $this->filters
         ];
 
-        return array(
+        $results = array(
             "filter"  => $filters,
             "from"    => $this->getFrom(),
             "size"    => $this->getSize(),
             "sort"    => $this->getSort(),
             "_source" => $this->ensureSource()
         );
+
+        if ($this->getAggregation()) {
+            $results = array_merge($results, array("aggs" => $this->getAggregation()));
+        }
+
+        return $results;
     }
 
     /**

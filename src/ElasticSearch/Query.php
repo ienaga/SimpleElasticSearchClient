@@ -2,6 +2,9 @@
 
 namespace SimpleElasticSearch;
 
+require_once __DIR__ . "/QueryInterface.php";
+require_once __DIR__ . "/BaseSearch.php";
+
 class Query extends BaseSearch implements QueryInterface
 {
     /**

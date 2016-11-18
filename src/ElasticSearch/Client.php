@@ -2,6 +2,8 @@
 
 namespace SimpleElasticSearch;
 
+require_once __DIR__ . "/ClientInterface.php";
+
 use \SimpleApi\Client as BaseClient;
 
 class Client extends BaseClient implements ClientInterface

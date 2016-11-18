@@ -2,6 +2,8 @@
 
 namespace SimpleElasticSearch;
 
+require_once __DIR__ . "/BaseSearchInterface.php";
+
 class BaseSearch implements BaseSearchInterface
 {
 
@@ -29,6 +31,16 @@ class BaseSearch implements BaseSearchInterface
      * @var array
      */
     protected $range = array();
+
+    /**
+     * @var null
+     */
+    protected $aggregation = null;
+
+    /**
+     * @var null
+     */
+    protected $current_aggregation_field = null;
 
     /**
      * @var bool
@@ -140,6 +152,39 @@ class BaseSearch implements BaseSearchInterface
     public function setRange($range)
     {
         $this->range = $range;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAggregation()
+    {
+        return $this->aggregation;
+    }
+
+    /**
+     * @param array $aggregation
+     */
+    public function setAggregation($aggregation)
+    {
+        $this->aggregation = $aggregation;
+    }
+
+    /**
+     * @param  string $field
+     * @param  string $type
+     * @return $this
+     */
+    public function addAggregation($field, $type = "terms")
+    {
+        $this->aggregation = array(
+            "group_by_".$field => array(
+                $type => array(
+                    "field" => $field
+                )
+            )
+        );
+        return $this;
     }
 
     /**
