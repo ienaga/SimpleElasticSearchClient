@@ -33,17 +33,21 @@ class Query extends BaseSearch implements QueryInterface
             $this->query = array_merge($this->query, array("range" => $range));
         }
 
-        $query = [
-            "and" => $this->query
-        ];
-
-        return array(
-            "query"   => $query,
+        $results = array(
             "from"    => $this->getFrom(),
             "size"    => $this->getSize(),
             "sort"    => $this->getSort(),
             "_source" => $this->ensureSource()
         );
+
+        if (count($this->query)) {
+            $results["query"] = [
+                "and" => $this->query
+            ];
+        }
+
+        return $results;
+
     }
 
     /**

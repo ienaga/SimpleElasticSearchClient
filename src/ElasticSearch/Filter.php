@@ -34,17 +34,18 @@ class Filter extends BaseSearch implements FilterInterface
             $this->filters = array_merge($this->filters, array(array("range" => $range)));
         }
 
-        $filters = [
-            "and" => $this->filters
-        ];
-
         $results = array(
-            "filter"  => $filters,
             "from"    => $this->getFrom(),
             "size"    => $this->getSize(),
             "sort"    => $this->getSort(),
             "_source" => $this->ensureSource()
         );
+
+        if (count($this->filters)) {
+            $results["filter"] = [
+                "and" => $this->filters
+            ];
+        }
 
         if ($this->getAggregation()) {
             $results = array_merge($results, array("aggs" => $this->getAggregation()));
