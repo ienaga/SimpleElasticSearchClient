@@ -6,6 +6,8 @@ ElasticSearch Simple Library for PHP
 # Filter Search
 
 ```php
+use \SimpleElasticSearch\Client;
+
 $client = new new Client([
     "end_point" => "URL"
 ]);
@@ -27,6 +29,8 @@ $data = $client
 # Data Create
 
 ```php
+use \SimpleElasticSearch\Client;
+
 $client = new new Client([
     "end_point" => "URL"
 ]);
@@ -48,7 +52,9 @@ $client
 # Data Update
 
 ```php
-$client = new new Client([
+use \SimpleElasticSearch\Client;
+
+$client = new new \SimpleElasticSearch\Client([
     "end_point" => "URL"
 ]);
 
