@@ -59,7 +59,7 @@ class Filter extends BaseSearch implements FilterInterface
      */
     public function attach()
     {
-        return $this->getClient()->mergeQuery($this->getFilters());
+        return $this->getClient()->mergeBody($this->getFilters());
     }
 
 }

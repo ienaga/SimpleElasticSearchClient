@@ -55,7 +55,7 @@ class Query extends BaseSearch implements QueryInterface
      */
     public function attach()
     {
-        return $this->getClient()->mergeQuery($this->getQuery());
+        return $this->getClient()->mergeBody($this->getQuery());
     }
 
 
