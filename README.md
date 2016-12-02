@@ -44,7 +44,7 @@ $query = [
 $client
     ->setIndex("index name")
     ->setType("type name")
-    ->setQuery($query)
+    ->setBody($query)
     ->create();
 ```
 
@@ -76,7 +76,7 @@ foreach ($hits as $hit) {
         ->setIndex("index name")
         ->setType("type name")
         ->setId($hit["_id"])
-        ->setQuery($source)
+        ->setBody($source)
         ->update();
 }
 ```
