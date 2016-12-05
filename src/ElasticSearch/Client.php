@@ -3,6 +3,7 @@
 namespace SimpleElasticSearch;
 
 require_once __DIR__ . "/ClientInterface.php";
+require_once __DIR__ . "/Result.php";
 
 use \SimpleApi\Client as BaseClient;
 
@@ -103,14 +104,16 @@ class Client extends BaseClient implements ClientInterface
     }
 
     /**
-     * @return array
+     * @return Result
      */
     public function search()
     {
-        return $this
+        $data = $this
             ->setMethod("GET")
             ->setPath(implode("/", [$this->getIndex(), $this->getType(), "_search"]))
             ->send();
+
+        return new Result($data);
     }
 
     /**
