@@ -94,7 +94,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 ->setBody($hit->getSource())
                 ->update();
 
-            var_dump($result->getData());
+            var_dump($result);
 
 //            // success
 //            $this->assertArrayHasKey("_shards", $result);
@@ -132,7 +132,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 ->setId($hit->getId())
                 ->delete();
 
-            var_dump($result->getData());
+            var_dump($result);
 
 //            // success
 //            $this->assertArrayHasKey("_shards", $result);
