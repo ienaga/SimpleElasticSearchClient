@@ -14,4 +14,4 @@ before_install:
 
 before_script:
   - sleep 10
-  - composer install
+  - composer install -o
