@@ -54,11 +54,13 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
     {
         $data = $this->getData();
 
-        // set
-        if (isset($data["hits"])) {
-            $this->_hits = $data["hits"]["hits"];
-        } else if (isset($data["_source"])) {
-            $this->_hits = $data["_source"];
+        switch (true) {
+            case isset($data["hits"]):
+                $this->_hits = $data["hits"]["hits"];
+                break;
+            case isset($data["_source"]):
+                $this->_hits = $data["_source"];
+                break;
         }
     }
 
@@ -76,8 +78,22 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
      */
     public function getSource()
     {
-        $data = $this->getData();
-        return (isset($data["_source"])) ? $data["_source"] : array();
+        return $this->_hits;
+    }
+
+    /**
+     * @param array $value
+     * @param int   $offset
+     */
+    public function setSource($value = array(), $offset = null)
+    {
+        if ($offset === null) {
+            $this->_hits = $value;
+        } else {
+            if (isset($this->_hits[$offset])) {
+                $this->_hits[$offset]["_source"] = $value;
+            }
+        }
     }
 
     /**
