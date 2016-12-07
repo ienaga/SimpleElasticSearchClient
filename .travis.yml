@@ -8,14 +8,8 @@ php:
 services:
   - elasticsearch
 
-addons:
-  apt:
-    sources:
-      - elasticsearch-2.3
-    packages:
-      - elasticsearch
-
 before_install:
+  - sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/elasticsearch-analysis-kuromoji/2.3.0
   - sudo service elasticsearch restart
 
 before_script:
