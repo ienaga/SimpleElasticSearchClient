@@ -117,14 +117,16 @@ class Client extends BaseClient implements ClientInterface
     }
 
     /**
-     * @return array
+     * @return Result
      */
     public function get()
     {
-        return $this
+        $data = $this
             ->setMethod("GET")
             ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId()]))
             ->send();
+
+        return new Result($data);
     }
 
     /**
