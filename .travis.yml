@@ -5,18 +5,13 @@ php:
   - 5.6
   - 7.0
 
-cache:
-  directories:
-    - vendor
-    - ~/.composer/cache
-
 services:
   - elasticsearch
 
-before_script:
-  - sleep 10
-
 before_install:
-  - composer install -o
   - sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/elasticsearch-analysis-kuromoji/2.3.0
   - sudo service elasticsearch restart
+
+before_script:
+  - sleep 10
+  - composer install
