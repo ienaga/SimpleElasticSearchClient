@@ -17,4 +17,5 @@ addons:
 
 before_script:
   - sleep 10
+  - "curl http://localhost:9200/"
   - composer install -o
