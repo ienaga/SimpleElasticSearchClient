@@ -17,6 +17,6 @@ before_script:
   - sleep 10
 
 before_install:
-  - composer install --dev -o --prefer-source --no-interaction
+  - composer install -o
   - sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/elasticsearch-analysis-kuromoji/2.3.0
   - sudo service elasticsearch restart

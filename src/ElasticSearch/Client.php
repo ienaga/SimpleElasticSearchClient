@@ -4,7 +4,7 @@ namespace SimpleElasticSearch;
 
 require_once __DIR__ . "/ClientInterface.php";
 require_once __DIR__ . "/Result.php";
-require_once __DIR__ . "/../../../simple-api-client/src/api/Client.php";
+//require_once __DIR__ . "/../../../simple-api-client/src/api/Client.php";
 
 use \SimpleApi\Client as BaseClient;
 
