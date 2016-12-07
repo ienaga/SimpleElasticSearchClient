@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../src/ElasticSearch/BaseSearch.php";
 
-class BaseSearchTest
+class BaseSearchTest extends \PHPUnit_Framework_TestCase
 {
 
 }
