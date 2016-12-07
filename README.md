@@ -12,7 +12,7 @@ $client = new new Client([
     "end_point" => "URL"
 ]);
 
-$data = $client
+$result = $client
     ->setIndex("index name")
     ->setType("type name")
     ->createFilter() // filter search start
@@ -25,6 +25,39 @@ $data = $client
     ->search(); // execute search
 ```
 
+# Result
+
+```php
+use \SimpleElasticSearch\Client;
+
+$client = new new Client([
+    "end_point" => "URL"
+]);
+
+$result = $client
+    ->setIndex("index name")
+    ->setType("type name")
+    ->createFilter() // filter search start
+    ->match("status", $status) // match case
+    ->setFrom($offset) // offset 
+    ->setSize($limit) // limit
+    ->addSort("price", $sort) // sort
+    ->addAggregation("user_id") // group by
+    ->attach() // filter search end
+    ->search(); // execute search
+    
+// found
+if ($result->isFound()) {
+    // ArrayAccess, Iterator, Countable
+    foreach ($result as $hit) {
+        // Result Singular 
+        // $hit->getIndex();
+        // $hit->getType();
+        // $hit->getId();
+        // $hit->property;
+    }
+}
+```
 
 # Data Create
 
@@ -49,7 +82,7 @@ $client
 ```
 
 
-# Data Update
+# Data Update Plural
 
 ```php
 use \SimpleElasticSearch\Client;
@@ -58,7 +91,7 @@ $client = new new \SimpleElasticSearch\Client([
     "end_point" => "URL"
 ]);
 
-$data = $client
+$result = $client
     ->setIndex("index name")
     ->setType("type name")
     ->createFilter()
@@ -66,17 +99,60 @@ $data = $client
     ->attach()
     ->search();
     
-$hits = $data["hits"]["hits"];
-foreach ($hits as $hit) {
+if ($result->isFound()) {
+    foreach ($result as $hit) {
+        
+        $hit->status = 1;
+        
+        $client
+            ->setIndex("index name")
+            ->setType("type name")
+            ->setId($hit["_id"])
+            ->setBody($hit->getSource())
+            ->update();
+    }
+}
+```
+
+# Data Update Singular
+
+```php
+use \SimpleElasticSearch\Client;
+
+$client = new new \SimpleElasticSearch\Client([
+    "end_point" => "URL"
+]);
+
+$result = $client
+    ->setIndex("index name")
+    ->setType("type name")
+    ->setId("id name")
+    ->get();
     
-    $source = $hit["_source"];
-    $source["status"] = 1;
+if ($result->isFound()) {
+    $result->status = 1;
     
     $client
-        ->setIndex("index name")
-        ->setType("type name")
-        ->setId($hit["_id"])
-        ->setBody($source)
+        ->setIndex($result->getIndex())
+        ->setType($result->getType())
+        ->setId($result->getId())
+        ->setBody($result->getSource())
         ->update();
 }
+```
+
+# Data Delete 
+
+```php
+use \SimpleElasticSearch\Client;
+
+$client = new new \SimpleElasticSearch\Client([
+    "end_point" => "URL"
+]);
+
+$client
+    ->setIndex("index name")
+    ->setType("type name")
+    ->setId("id name")
+    ->delete();
 ```
