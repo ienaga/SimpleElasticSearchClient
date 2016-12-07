@@ -94,16 +94,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 ->setBody($hit->getSource())
                 ->update();
 
-            var_dump($result);
+            // success
+            $this->assertArrayHasKey("_version", $result);
+            $this->assertEquals($result["_version"], 2);
 
-//            // success
-//            $this->assertArrayHasKey("_shards", $result);
-//            $this->assertArrayHasKey("successful", $result["_shards"]);
-//            $this->assertEquals($result["_shards"]["successful"], 1);
-//
-//            // not new
-//            $this->assertArrayHasKey("created", $result);
-//            $this->assertEquals($result["created"], false);
+            // not new
+            $this->assertArrayHasKey("created", $result);
+            $this->assertEquals($result["created"], false);
         }
 
         sleep(1);
@@ -132,21 +129,18 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 ->setId($hit->getId())
                 ->delete();
 
-            var_dump($result);
-
-//            // success
-//            $this->assertArrayHasKey("_shards", $result);
-//            $this->assertArrayHasKey("successful", $result["_shards"]);
-//            $this->assertEquals($result["_shards"]["successful"], 1);
+            // success
+            $this->assertArrayHasKey("_version", $result);
+            $this->assertEquals($result["_version"], 2);
         }
 
         sleep(1);
 
-//        $result = $client
-//            ->setIndex(self::INDEX)
-//            ->setType(self::TYPE)
-//            ->search();
-//
-//        $this->assertEquals($result->isFound(), false);
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->search();
+
+        $this->assertEquals($result->isFound(), false);
     }
 }
