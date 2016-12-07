@@ -15,6 +15,9 @@ addons:
     packages:
       - elasticsearch
 
+before_install:
+  - sudo service elasticsearch restart
+
 before_script:
   - sleep 10
   - "curl http://localhost:9200/"
