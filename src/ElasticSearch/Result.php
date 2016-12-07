@@ -59,7 +59,9 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
                 $this->_hits = $data["hits"]["hits"];
                 break;
             case isset($data["_source"]):
-                $this->_hits = $data["_source"];
+                $this->_hits = (is_array($data["_source"]))
+                    ? $data["_source"]
+                    : array();
                 break;
         }
     }
@@ -71,6 +73,17 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
     {
         $data = $this->getData();
         return (isset($data["hits"])) ? $data["hits"]["total"] : 0;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFound()
+    {
+        $data = $this->getData();
+        return (isset($data["found"]))
+            ? $data["found"]
+            : $this->getHitCount() > 0;
     }
 
     /**
