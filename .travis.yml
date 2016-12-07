@@ -11,6 +11,6 @@ before_install:
   - ./elasticsearch-2.3.2/bin/elasticsearch &
 
 before_script:
-  - sleep 10
+  - sleep 20
   - "curl http://localhost:9200/"
   - composer install -o
