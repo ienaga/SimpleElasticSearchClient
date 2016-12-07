@@ -2,6 +2,10 @@
 
 ElasticSearch Simple Library for PHP
 
+[![Build Status](https://travis-ci.org/ienaga/SimpleElasticSearchClient.svg?branch=master)](https://travis-ci.org/ienaga/SimpleElasticSearchClient)
+
+[![Latest Stable Version](https://poser.pugx.org/ienaga/simple-elasticsearch-client/v/stable)](https://packagist.org/packages/ienaga/simple-elasticsearch-client) [![Total Downloads](https://poser.pugx.org/ienaga/simple-elasticsearch-client/downloads)](https://packagist.org/packages/ienaga/simple-elasticsearch-client) [![Latest Unstable Version](https://poser.pugx.org/ienaga/simple-elasticsearch-client/v/unstable)](https://packagist.org/packages/ienaga/simple-elasticsearch-client) [![License](https://poser.pugx.org/ienaga/simple-elasticsearch-client/license)](https://packagist.org/packages/ienaga/simple-elasticsearch-client)
+
 
 # Filter Search
 

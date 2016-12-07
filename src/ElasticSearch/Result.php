@@ -34,7 +34,7 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
     /**
      * @return array
      */
-    public function getData(): array
+    public function getData()
     {
         return $this->data;
     }
