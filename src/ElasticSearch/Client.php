@@ -123,7 +123,7 @@ class Client extends BaseClient implements ClientInterface
     {
         return $this
             ->setMethod("GET")
-            ->setPath(implode("/",[$this->getIndex(), $this->getType()]))
+            ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId()]))
             ->send();
     }
 
@@ -156,7 +156,7 @@ class Client extends BaseClient implements ClientInterface
     {
         return $this
             ->setMethod("DELETE")
-            ->setPath(implode("/", [$this->getIndex(), $this->getType()]))
+            ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId()]))
             ->send();
     }
 
