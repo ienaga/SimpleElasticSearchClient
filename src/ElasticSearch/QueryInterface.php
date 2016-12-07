@@ -12,6 +12,11 @@ interface QueryInterface
     public function match($key, $value = "");
 
     /**
+     * @return array
+     */
+    public function getQuery();
+
+    /**
      * @return Client
      */
     public function attach();

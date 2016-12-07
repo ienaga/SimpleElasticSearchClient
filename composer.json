@@ -1,8 +1,8 @@
 {
     "name": "ienaga/simple-elasticsearch-client",
     "homepage": "https://github.com/ienaga/SimpleElasticSearchClient",
-    "description": "simple ElasticSearch library.",
-    "keywords": [ "ElasticSearch", "aws" ],
+    "description": "Simple ElasticSearch Library.",
+    "keywords": [ "ElasticSearch", "aws", "library" ],
     "type": "library",
     "license": "MIT",
     "authors":[

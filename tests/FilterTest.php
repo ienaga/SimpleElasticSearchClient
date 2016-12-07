@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../src/ElasticSearch/Filters.php";
+require_once __DIR__ . "/../src/ElasticSearch/Filter.php";
 
 class FilterTest
 {

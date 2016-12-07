@@ -12,6 +12,11 @@ interface FilterInterface
     public function match($key, $value = "");
 
     /**
+     * @return array
+     */
+    public function getFilters();
+
+    /**
      * @return Client
      */
     public function attach();
