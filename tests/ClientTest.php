@@ -37,7 +37,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         sleep(1);
 
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 0; $i <= 10; $i++) {
             $client
                 ->setIndex(self::INDEX)
                 ->setType(self::TYPE)

@@ -31,7 +31,8 @@ interface ResultInterface
     public function setSource($value = array(), $offset = null);
 
     /**
+     * @param  $key
      * @return int
      */
-    public function getAggregationHitCount();
+    public function getAggregationHitCount($key = "");
 }

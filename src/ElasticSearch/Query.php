@@ -30,7 +30,7 @@ class Query extends BaseSearch implements QueryInterface
     {
         $range = $this->getRange();
         if (count($range)) {
-            $this->query = array_merge($this->query, array("range" => $range));
+            $this->query = array_merge($this->query, array(array("range" => $range)));
         }
 
         $results = array(
@@ -44,6 +44,10 @@ class Query extends BaseSearch implements QueryInterface
             $results["query"] = [
                 "and" => $this->query
             ];
+        }
+
+        if ($this->getAggregation()) {
+            $results = array_merge($results, array("aggs" => $this->getAggregation()));
         }
 
         return $results;

@@ -137,13 +137,14 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
     }
 
     /**
+     * @param  string $key
      * @return int
      */
-    public function getAggregationHitCount()
+    public function getAggregationHitCount($key = "")
     {
         $data = $this->getData();
         return (isset($data["aggregations"]))
-         ? count($data["aggregations"]["group_by_execute_id"]["buckets"])
+         ? count($data["aggregations"]["group_by_".$key]["buckets"])
             : 0;
     }
 
