@@ -159,11 +159,11 @@ class ResultTest extends \PHPUnit_Framework_TestCase
             ->setType(self::TYPE)
             ->search();
 
-        foreach ($result as $key => $hit) {
+        foreach ($result as $hit) {
             $hit->update_flag = 1;
         }
 
-        foreach ($result as $key => $hit) {
+        foreach ($result as $hit) {
             $this->assertEquals($hit->update_flag, 1);
         }
     }

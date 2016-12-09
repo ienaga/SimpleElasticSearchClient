@@ -2,6 +2,8 @@
 
 namespace SimpleElasticSearch;
 
+use Aws\Common\Facade\Rds;
+
 require_once __DIR__ . "/ResultInterface.php";
 
 class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
@@ -199,11 +201,11 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
 
     /**
      * @param  mixed $offset
-     * @return mixed
+     * @return Result
      */
     public function offsetGet($offset)
     {
-        return $this->_hits[$offset];
+        return new Result($this->_hits[$offset]);
     }
 
     /**
