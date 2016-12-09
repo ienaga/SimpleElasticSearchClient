@@ -37,7 +37,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         sleep(1);
 
-        for ($i = 0; $i <= 10; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             $client
                 ->setIndex(self::INDEX)
                 ->setType(self::TYPE)
@@ -134,7 +134,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($result["_version"], 2);
         }
 
-        sleep(1);
+        sleep(5);
 
         $result = $client
             ->setIndex(self::INDEX)
