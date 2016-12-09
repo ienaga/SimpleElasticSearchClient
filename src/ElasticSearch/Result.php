@@ -2,8 +2,6 @@
 
 namespace SimpleElasticSearch;
 
-use Aws\Common\Facade\Rds;
-
 require_once __DIR__ . "/ResultInterface.php";
 
 class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
@@ -206,7 +204,9 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
     public function offsetGet($offset)
     {
         $data = $this->_hits[$offset];
-        return (isset($data["_index"])) ? new self($data) : $data;
+        return (is_int($offset) && is_array($data) && isset($data["_source"]))
+            ? new self($data)
+            : $data;
     }
 
     /**
