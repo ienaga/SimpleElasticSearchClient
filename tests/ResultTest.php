@@ -57,7 +57,26 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function testArrayAccess()
     {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
 
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->addSort("user_id")
+            ->attach()
+            ->search();
+
+        $hit = $result[0];
+        $this->assertEquals($hit->isFound(), true);
+        $this->assertEquals($hit["user_id"], 1);
+        $this->assertEquals($hit["status"], 1);
+        $this->assertEquals($hit["update_flag"], 0);
+
+        unset($result[0]);
+        $this->assertEquals(count($result), 9);
     }
 
     /**
@@ -65,7 +84,19 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterator()
     {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
 
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        foreach ($result as $hit) {
+            $this->assertEquals($hit->isFound(), true);
+        }
     }
 
     /**
@@ -73,6 +104,67 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function testCountable()
     {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
 
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals(count($result), 10);
+
+        foreach ($result as $hit) {
+            $this->assertEquals(count($hit), 3);
+        }
+    }
+
+    /**
+     * test get
+     */
+    public function testGet()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->addSort("user_id")
+            ->attach()
+            ->search();
+
+        foreach ($result as $key => $hit) {
+            $this->assertEquals($hit->user_id, $key+1);
+            $this->assertEquals($hit->status, 1);
+            $this->assertEquals($hit->update_flag, 0);
+        }
+    }
+
+    /**
+     * test set
+     */
+    public function testSet()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->search();
+
+        foreach ($result as $key => $hit) {
+            $hit->update_flag = 1;
+        }
+
+        foreach ($result as $key => $hit) {
+            $this->assertEquals($hit->update_flag, 1);
+        }
     }
 }
