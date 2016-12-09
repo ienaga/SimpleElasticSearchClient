@@ -52,8 +52,46 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         sleep(1);
     }
 
-    public function testTest()
+    /**
+     * test query search
+     */
+    public function testQuerySearch()
     {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
 
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createQuery()
+            ->match("status", 0)
+            ->attach()
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 5);
+    }
+
+    /**
+     * test query search
+     */
+    public function testQueryAndSearch()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createQuery()
+            ->match("user_id", 1)
+            ->match("status", 1)
+            ->attach()
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 1);
     }
 }
