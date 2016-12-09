@@ -35,7 +35,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
             ->setPath(self::INDEX)
             ->send();
 
-        sleep(1);
+        sleep(5);
 
         for ($i = 1; $i <= 10; $i++) {
 
@@ -49,7 +49,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
                 ->create();
         }
 
-        sleep(1);
+        sleep(5);
     }
 
     /**

@@ -35,7 +35,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->setPath(self::INDEX)
             ->send();
 
-        sleep(1);
+        sleep(5);
 
         for ($i = 1; $i <= 10; $i++) {
             $client
@@ -49,7 +49,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 ->create();
         }
 
-        sleep(1);
+        sleep(5);
     }
 
     /**
@@ -103,7 +103,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($result["created"], false);
         }
 
-        sleep(1);
+        sleep(5);
     }
 
     /**

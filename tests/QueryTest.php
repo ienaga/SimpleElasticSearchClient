@@ -35,7 +35,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->setPath(self::INDEX)
             ->send();
 
-        sleep(1);
+        sleep(5);
 
         for ($i = 1; $i <= 10; $i++) {
             $client
@@ -43,13 +43,12 @@ class QueryTest extends \PHPUnit_Framework_TestCase
                 ->setType(self::TYPE)
                 ->setBody(array(
                     "user_id"     => $i,
-                    "status"      => ($i % 2),
-                    "update_flag" => 0
+                    "status"      => ($i % 2)
                 ))
                 ->create();
         }
 
-        sleep(1);
+        sleep(5);
     }
 
     /**
