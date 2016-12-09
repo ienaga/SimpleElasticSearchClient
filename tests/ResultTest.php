@@ -161,11 +161,6 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         foreach ($result as $key => $hit) {
             $hit->update_flag = 1;
             $this->assertEquals($hit->update_flag, 1);
-            $result->setSource($hit, $key);
-        }
-
-        foreach ($result as $hit) {
-            $this->assertEquals($hit->update_flag, 1);
         }
     }
 }
