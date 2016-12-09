@@ -205,7 +205,8 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
      */
     public function offsetGet($offset)
     {
-        return new self($this->_hits[$offset]);
+        $data = $this->_hits[$offset];
+        return (isset($data["_index"])) ? new self($data) : $data;
     }
 
     /**
