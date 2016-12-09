@@ -99,7 +99,7 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->search();
 
         $this->assertEquals($result->isFound(), true);
-        $this->assertEquals($result->getAggregationHitCount(), 2);
+        $this->assertEquals($result->getAggregationHitCount("status"), 2);
     }
 
     /**

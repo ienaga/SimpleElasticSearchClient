@@ -35,7 +35,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
             ->setPath(self::INDEX)
             ->send();
 
-        sleep(1);
+        sleep(5);
 
         for ($i = 1; $i <= 10; $i++) {
             $client
@@ -49,10 +49,29 @@ class ResultTest extends \PHPUnit_Framework_TestCase
                 ->create();
         }
 
-        sleep(1);
+        sleep(5);
     }
 
-    public function testTest()
+    /**
+     * test ArrayAccess
+     */
+    public function testArrayAccess()
+    {
+
+    }
+
+    /**
+     * test Iterator
+     */
+    public function testIterator()
+    {
+
+    }
+
+    /**
+     * test Countable
+     */
+    public function testCountable()
     {
 
     }
