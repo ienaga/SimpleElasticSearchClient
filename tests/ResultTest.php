@@ -70,7 +70,6 @@ class ResultTest extends \PHPUnit_Framework_TestCase
             ->search();
 
         $hit = $result[0];
-        $this->assertEquals($hit->isFound(), true);
         $this->assertEquals($hit["user_id"], 1);
         $this->assertEquals($hit["status"], 1);
         $this->assertEquals($hit["update_flag"], 0);
@@ -95,7 +94,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result->isFound(), true);
         foreach ($result as $hit) {
-            $this->assertEquals($hit->isFound(), true);
+            $this->assertEquals($hit->getType(), self::TYPE);
         }
     }
 
