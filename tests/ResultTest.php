@@ -139,7 +139,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
 
         foreach ($result as $key => $hit) {
             $this->assertEquals($hit->user_id, $key+1);
-            $this->assertEquals($hit->status, 1);
+            $this->assertEquals($hit->status, ($key+1) % 2);
             $this->assertEquals($hit->update_flag, 0);
         }
     }
@@ -158,8 +158,10 @@ class ResultTest extends \PHPUnit_Framework_TestCase
             ->setType(self::TYPE)
             ->search();
 
-        foreach ($result as $hit) {
+        foreach ($result as $key => $hit) {
             $hit->update_flag = 1;
+            $this->assertEquals($hit->update_flag, 1);
+            $result->setSource($hit, $key);
         }
 
         foreach ($result as $hit) {
