@@ -35,8 +35,9 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->setPath(self::INDEX)
             ->send();
 
-        sleep(1);
+        sleep(5);
 
+        $time = time();
         for ($i = 1; $i <= 10; $i++) {
             $client
                 ->setIndex(self::INDEX)
@@ -44,16 +45,81 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
                 ->setBody(array(
                     "user_id"     => $i,
                     "status"      => ($i % 2),
-                    "update_flag" => 0
+                    "create_time" => $time++
                 ))
                 ->create();
         }
 
-        sleep(1);
+        sleep(5);
     }
 
-    public function testTest()
+    /**
+     * test sort
+     */
+    public function testSort()
     {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
 
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->match("status", 0)
+            ->addSort("create_time", "desc")
+            ->attach()
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 5);
+
+        $baseKey = 10;
+        foreach ($result as $hit) {
+            $this->assertEquals($hit->user_id, $baseKey);
+            $baseKey -= 2;
+        }
+    }
+
+    /**
+     * test aggregation
+     */
+    public function testAggregation()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->addAggregation("status")
+            ->attach()
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getAggregationHitCount(), 2);
+    }
+
+    /**
+     * test range
+     */
+    public function testRange()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->addRange("user_id", 1, 5)
+            ->attach()
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 5);
     }
 }
