@@ -138,7 +138,7 @@ class Client extends BaseClient implements ClientInterface
     {
         return $this
             ->setMethod("POST")
-            ->setPath(implode("/", [$this->getIndex(), $this->getType()]))
+            ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId()]))
             ->send();
     }
 
