@@ -5,6 +5,7 @@ ElasticSearch Simple Library for PHP
 # ElasticSearch Version
 
 - 2.3.x
+- 5.1.x
 
 
 [![Build Status](https://travis-ci.org/ienaga/SimpleElasticSearchClient.svg?branch=master)](https://travis-ci.org/ienaga/SimpleElasticSearchClient)
