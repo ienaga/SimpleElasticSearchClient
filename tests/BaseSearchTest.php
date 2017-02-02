@@ -66,7 +66,7 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->setIndex(self::INDEX)
             ->setType(self::TYPE)
             ->createFilter()
-            ->match("status", 0)
+            ->addAnd("status", 0)
             ->addSort("create_time", "desc")
             ->attach()
             ->search();
@@ -100,26 +100,5 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result->isFound(), true);
         $this->assertEquals($result->getAggregationHitCount("status"), 2);
-    }
-
-    /**
-     * test range
-     */
-    public function testRange()
-    {
-        $client = new Client(array(
-            "end_point" => self::END_POINT
-        ));
-
-        $result = $client
-            ->setIndex(self::INDEX)
-            ->setType(self::TYPE)
-            ->createFilter()
-            ->addRange("user_id", 1, 5)
-            ->attach()
-            ->search();
-
-        $this->assertEquals($result->isFound(), true);
-        $this->assertEquals($result->getHitCount(), 5);
     }
 }

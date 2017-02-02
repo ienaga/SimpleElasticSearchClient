@@ -53,6 +53,27 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * test range
+     */
+    public function testRange()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->between("user_id", 1, 5)
+            ->attach()
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 5);
+    }
+
+    /**
      * test filter search
      */
     public function testFilterSearch()
@@ -65,7 +86,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
             ->setIndex(self::INDEX)
             ->setType(self::TYPE)
             ->createFilter()
-            ->match("status", 0)
+            ->addAnd("status", 0)
             ->attach()
             ->search();
 
@@ -86,12 +107,77 @@ class FilterTest extends \PHPUnit_Framework_TestCase
             ->setIndex(self::INDEX)
             ->setType(self::TYPE)
             ->createFilter()
-            ->match("user_id", 1)
-            ->match("status", 1)
+            ->addAnd("user_id", 1)
+            ->addAnd("status", 1)
             ->attach()
             ->search();
 
         $this->assertEquals($result->isFound(), true);
         $this->assertEquals($result->getHitCount(), 1);
+    }
+
+    /**
+     * test filter search
+     */
+    public function testFilterOrSearch()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->addOr("user_id", 1)
+            ->addOr("user_id", 2)
+            ->attach()
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 2);
+    }
+
+    /**
+     * test filter search
+     */
+    public function testFilterNotSearch()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->addNot("user_id", 1)
+            ->attach()
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 9);
+    }
+
+    /**
+     * test filter search
+     */
+    public function testFilterMultiSearch()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->addAnd("status", 0)
+            ->between("user_id", 6)
+            ->attach()
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 3);
     }
 }

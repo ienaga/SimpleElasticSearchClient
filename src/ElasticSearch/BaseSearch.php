@@ -28,11 +28,6 @@ class BaseSearch implements BaseSearchInterface
     protected $sort = array();
 
     /**
-     * @var array
-     */
-    protected $range = array();
-
-    /**
      * @var null
      */
     protected $aggregation = null;
@@ -141,22 +136,6 @@ class BaseSearch implements BaseSearchInterface
     /**
      * @return array
      */
-    public function getRange()
-    {
-        return $this->range;
-    }
-
-    /**
-     * @param array $range
-     */
-    public function setRange($range)
-    {
-        $this->range = $range;
-    }
-
-    /**
-     * @return array
-     */
     public function getAggregation()
     {
         return $this->aggregation;
@@ -184,21 +163,6 @@ class BaseSearch implements BaseSearchInterface
                 )
             )
         );
-        return $this;
-    }
-
-    /**
-     * @param  string $key
-     * @param  mixed  $start
-     * @param  mixed  $end
-     * @return $this
-     */
-    public function addRange($key, $start, $end)
-    {
-        $this->range[$key] = [
-            "from" => $start,
-            "to"   => $end
-        ];
         return $this;
     }
 

@@ -5,7 +5,6 @@ namespace SimpleElasticSearch;
 require_once __DIR__ . "/ClientInterface.php";
 require_once __DIR__ . "/Result.php";
 require_once __DIR__ . "/Filter.php";
-require_once __DIR__ . "/Query.php";
 
 use \SimpleApi\Client as BaseClient;
 
@@ -95,14 +94,6 @@ class Client extends BaseClient implements ClientInterface
     public function createFilter()
     {
         return new Filter($this);
-    }
-
-    /**
-     * @return Query
-     */
-    public function createQuery()
-    {
-        return new Query($this);
     }
 
     /**

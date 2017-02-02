@@ -11,16 +11,78 @@ class Filter extends BaseSearch implements FilterInterface
     /**
      * @var array
      */
-    protected $filters = array();
+    protected $must     = array();
+
+    /**
+     * @var array
+     */
+    protected $must_not = array();
+
+    /**
+     * @var array
+     */
+    protected $should   = array();
 
     /**
      * @param  string $key
-     * @param  string $value
+     * @param  mixed  $value
      * @return $this
      */
-    public function match($key, $value = "")
+    public function addAnd($key, $value = "")
     {
-        $this->filters[] = array("term" => array($key => $value));
+        $this->must[] = array("term" => array($key => $value));
+        return $this;
+    }
+
+    /**
+     * @param  string $key
+     * @param  mixed  $value
+     * @return $this
+     */
+    public function addOr($key, $value = "")
+    {
+        $this->should[] = array("term" => array($key => $value));
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     * @return $this
+     */
+    public function addNot($key, $value = "")
+    {
+        $this->must_not[] = array("term" => array($key => $value));
+        return $this;
+    }
+
+    /**
+     * @param  string $key
+     * @param  mixed  $start
+     * @param  mixed  $end
+     * @param  string $type
+     * @return $this
+     */
+    public function between($key, $start, $end = null, $type = "AND")
+    {
+        $query = array("gte" => $start);
+        if ($end) {
+            $query["lte"] = $end;
+        }
+
+        $range = array("range" => array($key => $query));
+        switch (strtoupper($type)) {
+            case "AND":
+                $this->must[]     = $range;
+                break;
+            case "OR":
+                $this->should[]   = $range;
+                break;
+            case "NOT":
+                $this->must_not[] = $range;
+                break;
+        }
+
         return $this;
     }
 
@@ -29,11 +91,7 @@ class Filter extends BaseSearch implements FilterInterface
      */
     public function getFilters()
     {
-        $range = $this->getRange();
-        if (count($range)) {
-            $this->filters = array_merge($this->filters, array(array("range" => $range)));
-        }
-
+        // base
         $results = array(
             "from"    => $this->getFrom(),
             "size"    => $this->getSize(),
@@ -41,10 +99,22 @@ class Filter extends BaseSearch implements FilterInterface
             "_source" => $this->ensureSource()
         );
 
-        if (count($this->filters)) {
-            $results["filter"] = [
-                "and" => $this->filters
-            ];
+        // create query
+        $query = array();
+        if (count($this->must)) {
+            $query["must"] = $this->must;
+        }
+
+        if (count($this->should)) {
+            $query["should"] = $this->should;
+        }
+
+        if (count($this->must_not)) {
+            $query["must_not"] = $this->must_not;
+        }
+
+        if (count($query)) {
+            $results["query"]["bool"] = $query;
         }
 
         if ($this->getAggregation()) {
