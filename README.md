@@ -104,7 +104,7 @@ $result = $client
     ->search(); // execute search
 ```
 
-## Case - 4
+## Case - 5
 
 ```mysql
 SELECT * FROM `INDEX_NAME`.`TYPE_NAME` WHERE `status` > 100;
