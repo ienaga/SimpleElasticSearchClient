@@ -9,6 +9,14 @@ class Filter extends BaseSearch implements FilterInterface
 {
 
     /**
+     * @var string
+     */
+    const GREATER_THAN  = "gt"; // >
+    const LESS_THAN     = "lt"; // <
+    const GREATER_EQUAL = "gte"; // >=
+    const LESS_EQUAL    = "lte"; // <=
+
+    /**
      * @var array
      */
     protected $must     = array();
@@ -46,8 +54,8 @@ class Filter extends BaseSearch implements FilterInterface
     }
 
     /**
-     * @param string $key
-     * @param mixed  $value
+     * @param  string $key
+     * @param  mixed  $value
      * @return $this
      */
     public function addNot($key, $value = "")
@@ -63,20 +71,46 @@ class Filter extends BaseSearch implements FilterInterface
      * @param  string $type
      * @return $this
      */
-    public function between($key, $start, $end = null, $type = "AND")
+    public function between($key, $start, $end, $type = "AND")
     {
-        $query = array("gte" => $start);
-        if ($end) {
-            $query["lte"] = $end;
-        }
+        $query = array(
+            "gte" => $start,
+            "lte" => $end
+        );
 
         $range = array("range" => array($key => $query));
         switch (strtoupper($type)) {
             case "AND":
-                $this->must[]     = $range;
+                $this->must[] = $range;
                 break;
             case "OR":
-                $this->should[]   = $range;
+                $this->should[] = $range;
+                break;
+            case "NOT":
+                $this->must_not[] = $range;
+                break;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  string $key
+     * @param  mixed  $value
+     * @param  string $operator
+     * @param  string $type
+     * @return $this
+     */
+    public function operator($key, $value, $operator = self::GREATER_THAN, $type = "AND")
+    {
+        $query = array($operator => $value);
+        $range = array("range" => array($key => $query));
+        switch (strtoupper($type)) {
+            case "AND":
+                $this->must[] = $range;
+                break;
+            case "OR":
+                $this->should[] = $range;
                 break;
             case "NOT":
                 $this->must_not[] = $range;

@@ -162,7 +162,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     /**
      * test filter search
      */
-    public function testFilterMultiSearch()
+    public function testFilterOperatorSearch()
     {
         $client = new Client(array(
             "end_point" => self::END_POINT
@@ -172,8 +172,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
             ->setIndex(self::INDEX)
             ->setType(self::TYPE)
             ->createFilter()
-            ->addAnd("status", 0)
-            ->between("user_id", 6)
+            ->operator("user_id", 6, "gt")
             ->attach()
             ->search();
 

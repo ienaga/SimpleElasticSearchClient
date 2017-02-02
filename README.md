@@ -13,7 +13,13 @@ ElasticSearch Simple Library for PHP
 [![Latest Stable Version](https://poser.pugx.org/ienaga/simple-elasticsearch-client/v/stable)](https://packagist.org/packages/ienaga/simple-elasticsearch-client) [![Total Downloads](https://poser.pugx.org/ienaga/simple-elasticsearch-client/downloads)](https://packagist.org/packages/ienaga/simple-elasticsearch-client) [![Latest Unstable Version](https://poser.pugx.org/ienaga/simple-elasticsearch-client/v/unstable)](https://packagist.org/packages/ienaga/simple-elasticsearch-client) [![License](https://poser.pugx.org/ienaga/simple-elasticsearch-client/license)](https://packagist.org/packages/ienaga/simple-elasticsearch-client)
 
 
-# Filter Search
+# Search
+
+## Case - 1
+
+```mysql
+SELECT * FROM `INDEX_NAME`.`TYPE_NAME` WHERE `statue` = 1;
+```
 
 ```php
 use \SimpleElasticSearch\Client;
@@ -23,17 +29,102 @@ $client = new new Client([
 ]);
 
 $result = $client
-    ->setIndex("index name")
-    ->setType("type name")
+    ->setIndex("INDEX_NAME")
+    ->setType("TYPE_NAME")
     ->createFilter() // filter search start
-    ->match("status", $status) // match case
-    ->setFrom($offset) // offset 
-    ->setSize($limit) // limit
-    ->addSort("price", $sort) // sort
-    ->addAggregation("user_id") // group by
+    ->addAnd("status", $status)
     ->attach() // filter search end
     ->search(); // execute search
 ```
+
+## Case - 2
+
+```mysql
+SELECT * FROM `INDEX_NAME`.`TYPE_NAME` WHERE (`user_id` = 1 OR `user_id` = 2);
+```
+
+```php
+use \SimpleElasticSearch\Client;
+
+$client = new new Client([
+    "end_point" => "URL"
+]);
+
+$result = $client
+    ->setIndex("INDEX_NAME")
+    ->setType("TYPE_NAME")
+    ->createFilter() // filter search start
+    ->addOr("user_id", 1)
+    ->addOr("user_id", 2)
+    ->attach() // filter search end
+    ->search(); // execute search
+```
+
+## Case - 3
+
+```mysql
+SELECT * FROM `INDEX_NAME`.`TYPE_NAME` WHERE `status` != 0;
+```
+
+```php
+use \SimpleElasticSearch\Client;
+
+$client = new new Client([
+    "end_point" => "URL"
+]);
+
+$result = $client
+    ->setIndex("INDEX_NAME")
+    ->setType("TYPE_NAME")
+    ->createFilter() // filter search start
+    ->addNot("status", 0)
+    ->attach() // filter search end
+    ->search(); // execute search
+```
+
+## Case - 4
+
+```mysql
+SELECT * FROM `INDEX_NAME`.`TYPE_NAME` WHERE `status` BETWEEN 0 AND 100;
+```
+
+```php
+use \SimpleElasticSearch\Client;
+
+$client = new new Client([
+    "end_point" => "URL"
+]);
+
+$result = $client
+    ->setIndex("INDEX_NAME")
+    ->setType("TYPE_NAME")
+    ->createFilter() // filter search start
+    ->between("status", 0, 100)
+    ->attach() // filter search end
+    ->search(); // execute search
+```
+
+## Case - 4
+
+```mysql
+SELECT * FROM `INDEX_NAME`.`TYPE_NAME` WHERE `status` > 100;
+```
+```php
+use \SimpleElasticSearch\Client;
+
+$client = new new Client([
+    "end_point" => "URL"
+]);
+
+$result = $client
+    ->setIndex("INDEX_NAME")
+    ->setType("TYPE_NAME")
+    ->createFilter() // filter search start
+    ->operator("status", 100, "gt")
+    ->attach() // filter search end
+    ->search(); // execute search
+```
+
 
 # Result
 
@@ -48,7 +139,7 @@ $result = $client
     ->setIndex("index name")
     ->setType("type name")
     ->createFilter() // filter search start
-    ->match("status", $status) // match case
+    ->addAnd("status", $status) // match case
     ->setFrom($offset) // offset 
     ->setSize($limit) // limit
     ->addSort("price", $sort) // sort
@@ -105,7 +196,7 @@ $result = $client
     ->setIndex("index name")
     ->setType("type name")
     ->createFilter()
-    ->match("user_id", $userId)
+    ->addAnd("user_id", $userId)
     ->attach()
     ->search();
     

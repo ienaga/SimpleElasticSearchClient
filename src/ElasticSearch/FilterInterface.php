@@ -33,7 +33,7 @@ interface FilterInterface
      * @param  string $type
      * @return $this
      */
-    public function between($key, $start, $end = null, $type = "AND");
+    public function between($key, $start, $end, $type = "AND");
 
     /**
      * @return array
