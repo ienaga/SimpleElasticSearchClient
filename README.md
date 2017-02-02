@@ -125,7 +125,6 @@ $result = $client
     ->search(); // execute search
 ```
 
-
 # Result
 
 ```php

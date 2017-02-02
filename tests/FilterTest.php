@@ -177,6 +177,6 @@ class FilterTest extends \PHPUnit_Framework_TestCase
             ->search();
 
         $this->assertEquals($result->isFound(), true);
-        $this->assertEquals($result->getHitCount(), 3);
+        $this->assertEquals($result->getHitCount(), 4);
     }
 }
