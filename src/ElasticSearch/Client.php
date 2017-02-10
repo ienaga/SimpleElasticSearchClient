@@ -106,6 +106,8 @@ class Client extends BaseClient implements ClientInterface
             ->setPath(implode("/", [$this->getIndex(), $this->getType(), "_search"]))
             ->send();
 
+        $this->_clear();
+
         return new Result($data);
     }
 
@@ -119,6 +121,8 @@ class Client extends BaseClient implements ClientInterface
             ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId()]))
             ->send();
 
+        $this->_clear();
+
         return new Result($data);
     }
 
@@ -127,10 +131,14 @@ class Client extends BaseClient implements ClientInterface
      */
     public function create()
     {
-        return $this
+        $result = $this
             ->setMethod("POST")
             ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId()]))
             ->send();
+
+        $this->_clear();
+
+        return $result;
     }
 
     /**
@@ -138,10 +146,14 @@ class Client extends BaseClient implements ClientInterface
      */
     public function update()
     {
-        return $this
+        $result = $this
             ->setMethod("PUT")
             ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId()]))
             ->send();
+
+        $this->_clear();
+
+        return $result;
     }
 
     /**
@@ -149,10 +161,25 @@ class Client extends BaseClient implements ClientInterface
      */
     public function delete()
     {
-        return $this
+        $result =  $this
             ->setMethod("DELETE")
             ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId()]))
             ->send();
+
+        $this->_clear();
+
+        return $result;
+    }
+
+    /**
+     * clear
+     */
+    private function _clear()
+    {
+        $this
+            ->setIndex(null)
+            ->setType(null)
+            ->setIndex(null);
     }
 
 }

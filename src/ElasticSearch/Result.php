@@ -144,7 +144,7 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
     {
         $data = $this->getData();
         return (isset($data["aggregations"]))
-         ? count($data["aggregations"]["group_by_".$key]["buckets"])
+            ? count($data["aggregations"]["group_by_".$key]["buckets"])
             : 0;
     }
 
