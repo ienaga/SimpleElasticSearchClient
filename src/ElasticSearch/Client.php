@@ -179,7 +179,7 @@ class Client extends BaseClient implements ClientInterface
         $this
             ->setIndex(null)
             ->setType("")
-            ->setIndex("");
+            ->setId("");
     }
 
 }
