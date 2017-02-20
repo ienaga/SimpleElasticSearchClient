@@ -65,6 +65,25 @@ class Filter extends BaseSearch implements FilterInterface
     }
 
     /**
+     * @param string $type
+     * @param mixed  $value
+     */
+    public function setOperator($type, $value)
+    {
+        switch (strtoupper($type)) {
+            case "AND":
+                $this->must[] = $value;
+                break;
+            case "OR":
+                $this->should[] = $value;
+                break;
+            case "NOT":
+                $this->must_not[] = $value;
+                break;
+        }
+    }
+
+    /**
      * @param  string $key
      * @param  mixed  $start
      * @param  mixed  $end
@@ -79,18 +98,36 @@ class Filter extends BaseSearch implements FilterInterface
         );
 
         $range = array("range" => array($key => $query));
-        switch (strtoupper($type)) {
-            case "AND":
-                $this->must[] = $range;
-                break;
-            case "OR":
-                $this->should[] = $range;
-                break;
-            case "NOT":
-                $this->must_not[] = $range;
-                break;
-        }
+        $this->setOperator($type, $range);
 
+        return $this;
+    }
+
+    /**
+     * @param  string $key
+     * @param  mixed  $value
+     * @param  string $type
+     * @return $this
+     */
+    public function greaterEqual($key, $value, $type = "AND")
+    {
+        $query = array("gte" => $value);
+        $range = array("range" => array($key => $query));
+        $this->setOperator($type, $range);
+        return $this;
+    }
+
+    /**
+     * @param  string $key
+     * @param  mixed  $value
+     * @param  string $type
+     * @return $this
+     */
+    public function lessEqual($key, $value, $type = "AND")
+    {
+        $query = array("lte" => $value);
+        $range = array("range" => array($key => $query));
+        $this->setOperator($type, $range);
         return $this;
     }
 
