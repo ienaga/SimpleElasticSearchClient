@@ -22,6 +22,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     const TYPE = "user";
 
     /**
+     * @var string
+     */
+    const DELETE_TYPE = "delete";
+
+    /**
      * setUP
      */
     public function setUp()
@@ -41,6 +46,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $client
                 ->setIndex(self::INDEX)
                 ->setType(self::TYPE)
+                ->setBody(array(
+                    "user_id"     => $i,
+                    "status"      => ($i % 2),
+                    "update_flag" => 0
+                ))
+                ->create();
+        }
+
+        // delete only data
+        for ($i = 1; $i <= 10; $i++) {
+            $client
+                ->setIndex(self::INDEX)
+                ->setType(self::DELETE_TYPE)
                 ->setBody(array(
                     "user_id"     => $i,
                     "status"      => ($i % 2),
@@ -85,8 +103,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->search();
 
         foreach ($result as $hit) {
-            $hit->update_flag = 1;
-
             $result = $client
                 ->setIndex($hit->getIndex())
                 ->setType($hit->getType())
@@ -121,7 +137,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->search();
 
         foreach ($result as $hit) {
-            $hit->update_flag = 1;
 
             $result = $client
                 ->setIndex($hit->getIndex())
@@ -139,6 +154,30 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $result = $client
             ->setIndex(self::INDEX)
             ->setType(self::TYPE)
+            ->search();
+
+        $this->assertEquals($result->isFound(), false);
+    }
+
+    /**
+     * test type all delete
+     */
+    public function testTypeDelete()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $client
+            ->setIndex(self::INDEX)
+            ->setType(self::DELETE_TYPE)
+            ->delete();
+
+        sleep(5);
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::DELETE_TYPE)
             ->search();
 
         $this->assertEquals($result->isFound(), false);

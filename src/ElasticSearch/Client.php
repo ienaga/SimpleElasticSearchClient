@@ -161,9 +161,20 @@ class Client extends BaseClient implements ClientInterface
      */
     public function delete()
     {
+        $path = implode("/", [$this->getIndex(), $this->getType(), $this->getId()]);
+
+        // type all delete
+        if ($this->getType() && !$this->getId()) {
+            $this->setBody([
+                "query" => ["match_all" => []]
+            ]);
+
+            $path .= "/_query";
+        }
+
         $result =  $this
             ->setMethod("DELETE")
-            ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId()]))
+            ->setPath($path)
             ->send();
 
         $this->_clear();
