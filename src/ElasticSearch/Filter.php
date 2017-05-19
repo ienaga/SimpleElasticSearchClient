@@ -198,6 +198,7 @@ class Filter extends BaseSearch implements FilterInterface
         }
 
         if ($this->getAggregation()) {
+            print_r($this->getAggregation());
             $results = array_merge($results, array(
                 "aggs" => $this->getAggregation()
             ));

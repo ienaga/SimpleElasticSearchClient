@@ -146,11 +146,12 @@ class BaseSearch implements BaseSearchInterface
      * @param  string      $type
      * @param  string|null $order
      * @param  string      $sort
+     * @param  string|null $sub_type
      * @return $this
      */
     public function setAggregation(
         $field, $type = "terms",
-        $order = null, $sort = "asc"
+        $order = null, $sort = "asc", $sub_type = null
     )
     {
         // condition
@@ -165,6 +166,11 @@ class BaseSearch implements BaseSearchInterface
                 $type => $conditions
             )
         );
+
+        // sub aggregation
+        if ($sub_type) {
+            $this->addAggregation($field, $order, $sub_type);
+        }
 
         return $this;
     }
