@@ -180,17 +180,19 @@ class BaseSearch implements BaseSearchInterface
      */
     public function addAggregation($field, $sub_field, $type = "terms")
     {
-        if (!isset($this->aggregation[$field]["aggs"])) {
-            $this->aggregation[$field]["aggs"] = [];
-        }
-
         $name = $this->getAggregationGroupName($field);
 
-        $this->aggregation[$field]["aggs"][$name] = array(
+        if (!isset($this->aggregation[$name]["aggs"])) {
+            $this->aggregation[$name]["aggs"] = [];
+        }
+
+        $subName = $this->getAggregationGroupName($sub_field);
+        $this->aggregation[$name]["aggs"][$subName] = array(
             $type => array(
-                "field" => $field
+                "field" => $sub_field
             )
         );
+
         return $this;
     }
 
