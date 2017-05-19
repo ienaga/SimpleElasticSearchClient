@@ -97,7 +97,7 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->setIndex(self::INDEX)
             ->setType(self::TYPE)
             ->createFilter()
-            ->setAggregation("status", "terms", Aggregation::getSubGroupName("status", "count"))
+            ->setAggregation("status", "terms", Aggregation::getSubGroupName("count", "sum"))
             ->addAggregation("status", "count", "sum")
             ->attach()
             ->search();
@@ -111,10 +111,10 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
         foreach ($aggregations as $key => $aggregation) {
             switch ($key) {
                 case 0:
-                    $this->assertEquals($aggregation->getValue(), 300);
+                    $this->assertEquals($aggregation->value, 300);
                     break;
                 case 1:
-                    $this->assertEquals($aggregation->getValue(), 250);
+                    $this->assertEquals($aggregation->value, 250);
                     break;
             }
         }

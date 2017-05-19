@@ -61,13 +61,13 @@ class Aggregation implements AggregationInterface, \ArrayAccess, \Iterator, \Cou
     }
 
     /**
-     * @param  mixed  $type
      * @param  mixed  $field
+     * @param  mixed  $type
      * @return string
      */
-    public static function getSubGroupName($type, $field)
+    public static function getSubGroupName($field, $type)
     {
-        return sprintf(self::AGGREGATION_GROUP_NAME, $type, $field);
+        return sprintf(self::AGGREGATION_SUB_GROUP_NAME, $field, $type);
     }
 
     /**
@@ -206,5 +206,27 @@ class Aggregation implements AggregationInterface, \ArrayAccess, \Iterator, \Cou
     public function count()
     {
         return count($this->getBuckets());
+    }
+
+
+    /**
+     * @param  mixed $name
+     * @return mixed|null
+     */
+    public function __get($name)
+    {
+        if ($this->offsetExists($name)) {
+            return $this->offsetGet($name);
+        }
+        return null;
+    }
+
+    /**
+     * @param mixed $name
+     * @param mixed $value
+     */
+    public function __set($name, $value)
+    {
+        $this->offsetSet($name, $value);
     }
 }

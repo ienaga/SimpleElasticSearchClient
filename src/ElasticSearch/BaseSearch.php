@@ -194,7 +194,7 @@ class BaseSearch implements BaseSearchInterface
             $this->aggregation[$name]["aggs"] = [];
         }
 
-        $subName = Aggregation::getSubGroupName($type, $sub_field);
+        $subName = Aggregation::getSubGroupName($sub_field, $type);
 
         // condition
         $conditions = array("field" => $sub_field);
