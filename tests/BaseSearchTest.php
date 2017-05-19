@@ -1,8 +1,10 @@
 <?php
 
 require_once __DIR__ . "/../src/ElasticSearch/BaseSearch.php";
+require_once __DIR__ . "/../src/ElasticSearch/Aggregation.php";
 
 use \SimpleElasticSearch\Client;
+use \SimpleElasticSearch\Aggregation;
 
 class BaseSearchTest extends \PHPUnit_Framework_TestCase
 {
@@ -95,8 +97,8 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->setIndex(self::INDEX)
             ->setType(self::TYPE)
             ->createFilter()
-            ->setAggregation("status")
-            ->addAggregation("status", "count", "sum", array("count" => "asc"))
+            ->setAggregation("status", Aggregation::getSubGroupName("status", "count"))
+            ->addAggregation("status", "count", "sum")
             ->attach()
             ->search();
 
