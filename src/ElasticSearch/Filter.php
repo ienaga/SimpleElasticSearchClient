@@ -198,29 +198,9 @@ class Filter extends BaseSearch implements FilterInterface
         }
 
         if ($this->getAggregation()) {
-
-            $aggregations = [];
-            $key = null;
-            foreach ($this->getAggregation() as $aggregation) {
-
-                if (!$key) {
-
-                    $aggregations = $aggregation;
-
-                } else {
-
-                    $aggregations[$key] = array_merge(
-                        $aggregations[$key],
-                        array("aggs" => $aggregation)
-                    );
-
-                }
-                $key = key($aggregation);
-
-                var_dump($aggregation);
-            }
-
-            $results = array_merge($results, array("aggs" => $aggregations));
+            $results = array_merge($results, array(
+                "aggs" => $this->getAggregation()
+            ));
         }
 
         return $results;
