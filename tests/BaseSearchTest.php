@@ -45,6 +45,7 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
                 ->setBody(array(
                     "user_id"     => $i,
                     "status"      => ($i % 2),
+                    "count"       => ($i * 10),
                     "create_time" => $time++
                 ))
                 ->create();
@@ -99,6 +100,31 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->search();
 
         $this->assertEquals($result->isFound(), true);
-        $this->assertEquals($result->getAggregationHitCount("status"), 2);
+        $this->assertEquals($result->getHitCount(), 2);
     }
+
+    /**
+     * test aggregation
+     */
+    public function testAggregationSum()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->addAggregation("status")
+            ->addAggregation("count", "sum")
+            ->attach()
+            ->search();
+
+        var_dump($result->getData());
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 2);
+    }
+
 }

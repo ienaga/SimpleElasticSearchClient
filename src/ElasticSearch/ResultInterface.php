@@ -32,7 +32,13 @@ interface ResultInterface
 
     /**
      * @param  $key
-     * @return int
+     * @return mixed
      */
-    public function getAggregationHitCount($key = "");
+    public function getAggregationValue($key = "");
+
+    /**
+     * @param  $key
+     * @return array
+     */
+    public function getAggregations($key = "");
 }

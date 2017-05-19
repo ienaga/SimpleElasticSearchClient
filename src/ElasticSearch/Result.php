@@ -138,15 +138,50 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
 
     /**
      * @param  string $key
-     * @return int
+     * @return mixed
      */
-    public function getAggregationHitCount($key = "")
+    public function getAggregationValue($key = "")
     {
         $data = $this->getData();
-        return (isset($data["aggregations"]))
-            ? count($data["aggregations"]["group_by_".$key]["buckets"])
-            : 0;
+
+        if (!isset($data["aggregations"])) {
+            return null;
+        }
+
+        if (!isset($data["aggregations"]["group_by_". $key])) {
+            return null;
+        }
+
+        if (!isset($data["aggregations"]["group_by_". $key]["value"])) {
+            return null;
+        }
+
+        return $data["aggregations"]["group_by_". $key]["value"];
     }
+
+    /**
+     * @param  string $key
+     * @return array
+     */
+    public function getAggregations($key = "")
+    {
+        $data = $this->getData();
+
+        if (!isset($data["aggregations"])) {
+            return array();
+        }
+
+        if (!isset($data["aggregations"]["group_by_". $key])) {
+            return array();
+        }
+
+        if (!isset($data["aggregations"]["group_by_". $key]["buckets"])) {
+            return array();
+        }
+
+        return $data["aggregations"]["group_by_". $key]["buckets"];
+    }
+
 
     /**
      * @return Result
