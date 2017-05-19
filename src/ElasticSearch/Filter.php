@@ -199,14 +199,9 @@ class Filter extends BaseSearch implements FilterInterface
 
         if ($this->getAggregation()) {
 
-            var_dump("Aggregation");
-            var_dump($this->getAggregation());
-
             $aggregations = [];
             $key = null;
             foreach ($this->getAggregation() as $aggregation) {
-
-                var_dump($aggregations);
 
                 if (!$key) {
 
