@@ -102,8 +102,6 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->attach()
             ->search();
 
-        print_r($result->getData());
-
         $this->assertEquals($result->isFound(), true);
         $this->assertEquals($result->getHitCount(), 10);
 
@@ -111,10 +109,10 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
         foreach ($aggregations as $key => $aggregation) {
             switch ($key) {
                 case 0:
-                    $this->assertEquals($aggregation->value, 300);
+                    $this->assertEquals($aggregation->value, 250);
                     break;
                 case 1:
-                    $this->assertEquals($aggregation->value, 250);
+                    $this->assertEquals($aggregation->value, 300);
                     break;
             }
         }

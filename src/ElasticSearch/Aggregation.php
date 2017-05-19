@@ -208,25 +208,16 @@ class Aggregation implements AggregationInterface, \ArrayAccess, \Iterator, \Cou
         return count($this->getBuckets());
     }
 
-
     /**
      * @param  mixed $name
      * @return mixed|null
      */
     public function __get($name)
     {
-        if ($this->offsetExists($name)) {
-            return $this->offsetGet($name);
+        $data = $this->getData();
+        if (isset($data[$name])) {
+            return $data[$name];
         }
         return null;
-    }
-
-    /**
-     * @param mixed $name
-     * @param mixed $value
-     */
-    public function __set($name, $value)
-    {
-        $this->offsetSet($name, $value);
     }
 }
