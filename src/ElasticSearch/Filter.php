@@ -214,7 +214,7 @@ class Filter extends BaseSearch implements FilterInterface
 
                 } else {
 
-                    $aggregations = array_merge(
+                    $aggregations[$key] = array_merge(
                         $aggregations[$key],
                         array("aggs" => $aggregation)
                     );
