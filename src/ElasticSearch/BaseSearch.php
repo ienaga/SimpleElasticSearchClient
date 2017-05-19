@@ -162,9 +162,14 @@ class BaseSearch implements BaseSearchInterface
      * @param  string $field
      * @param  string $sub_field
      * @param  string $type
+     * @param  string $order
+     * @param  string $sort
      * @return $this
      */
-    public function addAggregation($field, $sub_field, $type = "terms")
+    public function addAggregation(
+        $field, $sub_field, $type = "terms",
+        $order = null, $sort = "asc"
+    )
     {
         $name = Aggregation::getGroupName($field);
 
@@ -172,11 +177,17 @@ class BaseSearch implements BaseSearchInterface
             $this->aggregation[$name]["aggs"] = [];
         }
 
-        $subName = Aggregation::getGroupName($sub_field);
+        $subName = Aggregation::getSubGroupName($type, $sub_field);
+
+        // condition
+        $conditions = array("field" => $sub_field);
+        if ($order) {
+            $conditions["order"] = array($order => $sort);
+        }
+
+        // set
         $this->aggregation[$name]["aggs"][$subName] = array(
-            $type => array(
-                "field" => $sub_field
-            )
+            $type => $conditions
         );
 
         return $this;

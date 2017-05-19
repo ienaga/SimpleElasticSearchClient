@@ -12,6 +12,11 @@ class Aggregation implements AggregationInterface, \ArrayAccess, \Iterator, \Cou
     const AGGREGATION_GROUP_NAME = "group_by_%s";
 
     /**
+     * @var string
+     */
+    const AGGREGATION_SUB_GROUP_NAME = "group_by_%s_%s";
+
+    /**
      * @var int
      */
     private $offset = 0;
@@ -53,6 +58,16 @@ class Aggregation implements AggregationInterface, \ArrayAccess, \Iterator, \Cou
     public static function getGroupName($field)
     {
         return sprintf(self::AGGREGATION_GROUP_NAME, $field);
+    }
+
+    /**
+     * @param  mixed  $type
+     * @param  mixed  $field
+     * @return string
+     */
+    public static function getSubGroupName($type, $field)
+    {
+        return sprintf(self::AGGREGATION_GROUP_NAME, $type, $field);
     }
 
     /**
