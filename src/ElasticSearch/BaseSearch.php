@@ -156,7 +156,7 @@ class BaseSearch implements BaseSearchInterface
      */
     public function addAggregation($field, $type = "terms")
     {
-        $this->aggregation = array(
+        $this->aggregation[] = array(
             "group_by_".$field => array(
                 $type => array(
                     "field" => $field

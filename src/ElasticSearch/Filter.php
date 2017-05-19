@@ -213,7 +213,6 @@ class Filter extends BaseSearch implements FilterInterface
                     );
 
                 }
-
                 $key = key($aggregation);
             }
 
