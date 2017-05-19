@@ -220,6 +220,10 @@ class Aggregation implements AggregationInterface, \ArrayAccess, \Iterator, \Cou
         print_r($values);
 
         foreach ($values as $value) {
+            if (!is_array($value)) {
+                continue;
+            }
+
             if (isset($value[$name])) {
                 return $value[$name];
             }

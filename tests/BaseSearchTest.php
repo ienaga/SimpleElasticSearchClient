@@ -109,7 +109,7 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
         print_r($result->getData());
 
         $aggregations = $result->getAggregation("status");
-        $results = [300, 250];
+        $results = [250, 300];
         foreach ($aggregations as $key => $aggregation) {
             $this->assertEquals($aggregation->value, $results[$key]);
         }
@@ -140,7 +140,7 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
         print_r($result->getData());
 
         $aggregations = $result->getAggregation("status");
-        $results = [250, 300];
+        $results = [300, 250];
         foreach ($aggregations as $key => $aggregation) {
             $this->assertEquals($aggregation->value, $results[$key]);
         }
