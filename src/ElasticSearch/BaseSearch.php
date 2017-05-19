@@ -8,6 +8,11 @@ class BaseSearch implements BaseSearchInterface
 {
 
     /**
+     * @var string
+     */
+    const AGGREGATION_GROUP_NAME = "group_by_%s";
+
+    /**
      * @var Client
      */
     protected $client = null;
@@ -142,6 +147,15 @@ class BaseSearch implements BaseSearchInterface
     }
 
     /**
+     * @param  mixed $field
+     * @return string
+     */
+    public function getAggregationGroupName($field)
+    {
+        return sprintf(self::AGGREGATION_GROUP_NAME, $field);
+    }
+
+    /**
      * @param  string $field
      * @param  string $type
      * @return $this
@@ -149,7 +163,7 @@ class BaseSearch implements BaseSearchInterface
     public function setAggregation($field, $type = "terms")
     {
         $this->aggregation = array(
-            "group_by_".$field => array(
+            $this->getAggregationGroupName($field) => array(
                 $type => array(
                     "field" => $field
                 )
@@ -170,7 +184,9 @@ class BaseSearch implements BaseSearchInterface
             $this->aggregation[$field]["aggs"] = [];
         }
 
-        $this->aggregation[$field]["aggs"]["group_by_".$sub_field] = array(
+        $name = $this->getAggregationGroupName($field);
+
+        $this->aggregation[$field]["aggs"][$name] = array(
             $type => array(
                 "field" => $field
             )
