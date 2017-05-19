@@ -162,13 +162,11 @@ class BaseSearch implements BaseSearchInterface
      * @param  string $field
      * @param  string $sub_field
      * @param  string $type
-     * @param  string $order
-     * @param  string $sort
+     * @param  array|null $orders
      * @return $this
      */
     public function addAggregation(
-        $field, $sub_field, $type = "terms",
-        $order = null, $sort = "asc"
+        $field, $sub_field, $type = "terms", $orders = null
     )
     {
         $name = Aggregation::getGroupName($field);
@@ -181,8 +179,8 @@ class BaseSearch implements BaseSearchInterface
 
         // condition
         $conditions = array("field" => $sub_field);
-        if ($order) {
-            $conditions["order"] = array($order => $sort);
+        if ($orders) {
+            $conditions["sort"] = array($orders);
         }
 
         // set
