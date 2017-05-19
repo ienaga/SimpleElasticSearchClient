@@ -97,7 +97,7 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->setIndex(self::INDEX)
             ->setType(self::TYPE)
             ->createFilter()
-            ->setAggregation("status", Aggregation::getSubGroupName("status", "count"))
+            ->setAggregation("status", "terms", Aggregation::getSubGroupName("status", "count"))
             ->addAggregation("status", "count", "sum")
             ->attach()
             ->search();
