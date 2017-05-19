@@ -97,6 +97,36 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->setIndex(self::INDEX)
             ->setType(self::TYPE)
             ->createFilter()
+            ->setAggregation("status", "terms")
+            ->addAggregation("status", "count", "sum")
+            ->attach()
+            ->search();
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 10);
+
+        print_r($result->getData());
+
+        $aggregations = $result->getAggregation("status");
+        $results = [250, 300];
+        foreach ($aggregations as $key => $aggregation) {
+            $this->assertEquals($aggregation->value, $results[$key]);
+        }
+    }
+
+    /**
+     * test aggregation
+     */
+    public function testAggregationSort()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
             ->setAggregation("status", "terms", Aggregation::getSubGroupName("count", "sum"))
             ->addAggregation("status", "count", "sum")
             ->attach()

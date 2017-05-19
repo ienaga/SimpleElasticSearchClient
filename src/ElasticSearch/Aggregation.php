@@ -215,7 +215,6 @@ class Aggregation implements AggregationInterface, \ArrayAccess, \Iterator, \Cou
     public function __get($name)
     {
         $data = $this->getData();
-        print_r($data);
         if (isset($data[$name])) {
             return $data[$name];
         }
