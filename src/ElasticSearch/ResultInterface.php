@@ -31,14 +31,8 @@ interface ResultInterface
     public function setSource($value = array(), $offset = null);
 
     /**
-     * @param  $key
-     * @return mixed
+     * @param  string $key
+     * @return Aggregation
      */
-    public function getAggregationValue($key = "");
-
-    /**
-     * @param  $key
-     * @return array
-     */
-    public function getAggregations($key = "");
+    public function getAggregation($key = "");
 }

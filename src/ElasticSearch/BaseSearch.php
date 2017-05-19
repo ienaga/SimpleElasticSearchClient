@@ -3,15 +3,10 @@
 namespace SimpleElasticSearch;
 
 require_once __DIR__ . "/BaseSearchInterface.php";
+require_once __DIR__ . "/Aggregation.php";
 
 class BaseSearch implements BaseSearchInterface
 {
-
-    /**
-     * @var string
-     */
-    const AGGREGATION_GROUP_NAME = "group_by_%s";
-
     /**
      * @var Client
      */
@@ -163,7 +158,7 @@ class BaseSearch implements BaseSearchInterface
     public function setAggregation($field, $type = "terms")
     {
         $this->aggregation = array(
-            $this->getAggregationGroupName($field) => array(
+            Aggregation::getGroupName($field) => array(
                 $type => array(
                     "field" => $field
                 )
@@ -180,13 +175,13 @@ class BaseSearch implements BaseSearchInterface
      */
     public function addAggregation($field, $sub_field, $type = "terms")
     {
-        $name = $this->getAggregationGroupName($field);
+        $name = Aggregation::getGroupName($field);
 
         if (!isset($this->aggregation[$name]["aggs"])) {
             $this->aggregation[$name]["aggs"] = [];
         }
 
-        $subName = $this->getAggregationGroupName($sub_field);
+        $subName = Aggregation::getGroupName($sub_field);
         $this->aggregation[$name]["aggs"][$subName] = array(
             $type => array(
                 "field" => $sub_field

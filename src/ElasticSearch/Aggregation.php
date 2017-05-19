@@ -7,10 +7,24 @@ require_once __DIR__ . "/AggregationInterface.php";
 class Aggregation implements AggregationInterface, \ArrayAccess, \Iterator, \Countable
 {
     /**
+     * @var string
+     */
+    const AGGREGATION_GROUP_NAME = "group_by_%s";
+
+    /**
+     * @var int
+     */
+    private $offset = 0;
+
+    /**
      * @var array
      */
     protected $data = array();
 
+    /**
+     * Aggregation constructor.
+     * @param array $data
+     */
     public function __construct($data = array())
     {
         $this->setData($data);
@@ -32,5 +46,150 @@ class Aggregation implements AggregationInterface, \ArrayAccess, \Iterator, \Cou
         $this->data = $data;
     }
 
+    /**
+     * @param  mixed  $field
+     * @return string
+     */
+    public static function getGroupName($field)
+    {
+        return sprintf(self::AGGREGATION_GROUP_NAME, $field);
+    }
 
+    /**
+     * @param  string $field
+     * @return Aggregation
+     */
+    public function getAggregation($field = "")
+    {
+        $data = $this->getData();
+        return (isset($data[self::getGroupName($field)]))
+            ? new Aggregation($data[self::getGroupName($field)])
+            : new Aggregation(array());
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getValue()
+    {
+        $data = $this->getData();
+        return (isset($data["value"])) ? $data["value"] : null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBuckets()
+    {
+        $data = $this->getData();
+        return (isset($data["buckets"])) ? $data["buckets"] : array();
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getKey()
+    {
+        $data = $this->getData();
+        return (isset($data["key"])) ? $data["key"] : null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDocCount()
+    {
+        $data = $this->getData();
+        return (isset($data["doc_count"])) ? $data["doc_count"] : 0;
+    }
+
+
+    /**
+     * @return Aggregation
+     */
+    public function current()
+    {
+        $buckets = $this->getBuckets();
+        return new self($buckets[$this->offset]);
+    }
+
+    /**
+     * @return void
+     */
+    public function next()
+    {
+        $this->offset++;
+    }
+
+    /**
+     * @return int
+     */
+    public function key()
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @return bool
+     */
+    public function valid()
+    {
+        $buckets = $this->getBuckets();
+        return isset($buckets[$this->key()]);
+    }
+
+    /**
+     * @return void
+     */
+    public function rewind()
+    {
+        $this->offset = 0;
+    }
+
+    /**
+     * @param  mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        $buckets = $this->getBuckets();
+        return isset($buckets[$offset]);
+    }
+
+    /**
+     * @param  mixed $offset
+     * @return Aggregation
+     */
+    public function offsetGet($offset)
+    {
+        $buckets = $this->getBuckets();
+        return new self($buckets[$offset]);
+    }
+
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        $buckets = $this->getBuckets();
+        $buckets[$offset] = $value;
+    }
+
+    /**
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset)
+    {
+        $buckets = $this->getBuckets();
+        unset($buckets[$offset]);
+    }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->getBuckets());
+    }
 }
