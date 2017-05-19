@@ -16,5 +16,13 @@ interface BaseSearchInterface
      * @param  string $type
      * @return $this
      */
-    public function addAggregation($field, $type = "terms");
+    public function setAggregation($field, $type = "terms");
+
+    /**
+     * @param  string $field
+     * @param  string $sub_field
+     * @param  string $type
+     * @return $this
+     */
+    public function addAggregation($field, $sub_field, $type = "terms");
 }

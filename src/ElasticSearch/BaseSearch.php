@@ -142,25 +142,37 @@ class BaseSearch implements BaseSearchInterface
     }
 
     /**
-     * @param array $aggregation
-     */
-    public function setAggregation($aggregation)
-    {
-        $this->aggregation = $aggregation;
-    }
-
-    /**
      * @param  string $field
      * @param  string $type
      * @return $this
      */
-    public function addAggregation($field, $type = "terms")
+    public function setAggregation($field, $type = "terms")
     {
         $this->aggregation[] = array(
             "group_by_".$field => array(
                 $type => array(
                     "field" => $field
                 )
+            )
+        );
+        return $this;
+    }
+
+    /**
+     * @param  string $field
+     * @param  string $sub_field
+     * @param  string $type
+     * @return $this
+     */
+    public function addAggregation($field, $sub_field, $type = "terms")
+    {
+        if (!isset($this->aggregation[$field]["aggs"])) {
+            $this->aggregation[$field]["aggs"] = [];
+        }
+
+        $this->aggregation[$field]["aggs"]["group_by_".$sub_field] = array(
+            $type => array(
+                "field" => $field
             )
         );
         return $this;

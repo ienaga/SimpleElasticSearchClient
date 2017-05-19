@@ -142,7 +142,7 @@ $result = $client
     ->setFrom($offset) // offset 
     ->setSize($limit) // limit
     ->addSort("price", $sort) // sort
-    ->addAggregation("user_id") // group by
+    ->setAggregation("user_id") // group by
     ->attach() // filter search end
     ->search(); // execute search
     

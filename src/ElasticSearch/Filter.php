@@ -216,6 +216,8 @@ class Filter extends BaseSearch implements FilterInterface
 
                 }
                 $key = key($aggregation);
+
+                var_dump($aggregation);
             }
 
             $results = array_merge($results, array("aggs" => $aggregations));
