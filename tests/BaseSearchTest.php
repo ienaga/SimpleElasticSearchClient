@@ -87,7 +87,7 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
     /**
      * test aggregation
      */
-    public function testAggregation()
+    public function testAggregationSortAsc()
     {
         $client = new Client(array(
             "end_point" => self::END_POINT
@@ -98,7 +98,7 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->setType(self::TYPE)
             ->createFilter()
             ->exceptSource()
-            ->setAggregation("status", "terms")
+            ->setAggregation("status", "terms", Aggregation::getSubGroupName("count", "sum"), "asc")
             ->addAggregation("status", "count", "sum")
             ->attach()
             ->search();
@@ -106,10 +106,8 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($result->isFound(), true);
         $this->assertEquals($result->getHitCount(), 10);
 
-        print_r($result->getData());
-
         $aggregations = $result->getAggregation("status");
-        $results = [250, 300];
+        $results = [250.0, 300.0];
         foreach ($aggregations as $key => $aggregation) {
             $this->assertEquals($aggregation->value, $results[$key]);
         }
@@ -118,7 +116,7 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
     /**
      * test aggregation
      */
-    public function testAggregationSort()
+    public function testAggregationSortDesc()
     {
         $client = new Client(array(
             "end_point" => self::END_POINT
@@ -137,10 +135,8 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($result->isFound(), true);
         $this->assertEquals($result->getHitCount(), 10);
 
-        print_r($result->getData());
-
         $aggregations = $result->getAggregation("status");
-        $results = [300, 250];
+        $results = [300.0, 250.0];
         foreach ($aggregations as $key => $aggregation) {
             $this->assertEquals($aggregation->value, $results[$key]);
         }
