@@ -142,15 +142,6 @@ class BaseSearch implements BaseSearchInterface
     }
 
     /**
-     * @param  mixed $field
-     * @return string
-     */
-    public function getAggregationGroupName($field)
-    {
-        return sprintf(self::AGGREGATION_GROUP_NAME, $field);
-    }
-
-    /**
      * @param  string $field
      * @param  string $type
      * @return $this
