@@ -142,4 +142,29 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * test aggregation
+     */
+    public function testAggregationSortSize()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->createFilter()
+            ->exceptSource()
+            ->setAggregation("status", "terms", Aggregation::getSubGroupName("count", "sum"), "desc", 1)
+            ->addAggregation("status", "count", "sum")
+            ->attach()
+            ->search();
+
+        print_r($result);
+
+        $this->assertEquals($result->isFound(), true);
+        $this->assertEquals($result->getHitCount(), 10);
+        $this->assertEquals(count($result->getAggregation("status")), 1);
+    }
 }

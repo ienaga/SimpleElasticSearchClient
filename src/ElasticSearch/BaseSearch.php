@@ -146,18 +146,25 @@ class BaseSearch implements BaseSearchInterface
      * @param  string      $type
      * @param  string|null $order
      * @param  string      $sort
-     * @param  string|null $sub_type
+     * @param  int|null    $limit
      * @return $this
      */
     public function setAggregation(
         $field, $type = "terms",
-        $order = null, $sort = "asc", $sub_type = null
+        $order = null, $sort = "asc", $limit = null
     )
     {
         // condition
         $conditions = array("field" => $field);
+
+        // order by
         if ($order) {
             $conditions["order"] = array($order => $sort);
+        }
+
+        // size(limit)
+        if ($limit) {
+            $conditions["size"] = $limit;
         }
 
         // set
@@ -166,11 +173,6 @@ class BaseSearch implements BaseSearchInterface
                 $type => $conditions
             )
         );
-
-        // sub aggregation
-        if ($sub_type) {
-            $this->addAggregation($field, $order, $sub_type);
-        }
 
         return $this;
     }
