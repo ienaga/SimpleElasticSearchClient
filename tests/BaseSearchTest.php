@@ -161,8 +161,6 @@ class BaseSearchTest extends \PHPUnit_Framework_TestCase
             ->attach()
             ->search();
 
-        print_r($result);
-
         $this->assertEquals($result->isFound(), true);
         $this->assertEquals($result->getHitCount(), 10);
         $this->assertEquals(count($result->getAggregation("status")), 1);

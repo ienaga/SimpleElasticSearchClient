@@ -25,4 +25,10 @@ interface BaseSearchInterface
      * @return $this
      */
     public function addAggregation($field, $sub_field, $type = "terms");
+
+    /**
+     * @param  array $custom
+     * @return $this
+     */
+    public function customAggregation($custom = array());
 }

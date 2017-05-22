@@ -213,6 +213,16 @@ class BaseSearch implements BaseSearchInterface
     }
 
     /**
+     * @param  array $custom
+     * @return $this
+     */
+    public function customAggregation($custom = array())
+    {
+        $this->aggregation = $custom;
+        return $this;
+    }
+
+    /**
      * @return $this
      */
     public function exceptSource()
