@@ -172,6 +172,26 @@ class Client extends BaseClient implements ClientInterface
     }
 
     /**
+     * @return array
+     */
+    public function deleteType()
+    {
+        $result =  $this
+            ->setMethod("POST")
+            ->setPath(implode("/", [$this->getIndex(), $this->getType(), "_delete_by_query"]))
+            ->setBody(
+                [
+                    "query" => [
+                        "match_all" => (object)[]
+                    ]
+                ]
+            )
+            ->send();
+        $this->_clear();
+        return $result;
+    }
+
+    /**
      * clear
      */
     private function _clear()
