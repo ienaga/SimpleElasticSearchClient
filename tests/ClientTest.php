@@ -158,4 +158,40 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result->isFound(), false);
     }
+
+    /**
+     * test delete
+     */
+    public function testDeleteType()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->search()
+            ->getHitCount();
+
+        if($result > 0)
+        {
+            $result = $client
+                ->setIndex(self::INDEX)
+                ->setType(self::TYPE)
+                ->deleteType();
+
+            $this->assertFalse(isset($result["error"]));
+        }
+
+        sleep(5);
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType(self::TYPE)
+            ->search()
+            ->getHitCount();
+
+        $this->assertEquals($result, 0);
+    }
 }
