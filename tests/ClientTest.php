@@ -47,8 +47,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 ->setIndex(self::INDEX)
                 ->setType(self::TYPE)
                 ->setBody(array(
-                    "user_id"     => $i,
-                    "status"      => ($i % 2),
+                    "user_id" => $i,
+                    "status" => ($i % 2),
                     "update_flag" => 0
                 ))
                 ->create();
@@ -60,8 +60,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 ->setIndex(self::INDEX)
                 ->setType(self::DELETE_TYPE)
                 ->setBody(array(
-                    "user_id"     => $i,
-                    "status"      => ($i % 2),
+                    "user_id" => $i,
+                    "status" => ($i % 2),
                     "update_flag" => 0
                 ))
                 ->create();
@@ -174,8 +174,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->search()
             ->getHitCount();
 
-        if($result > 0)
-        {
+        if ($result > 0) {
             $result = $client
                 ->setIndex(self::INDEX)
                 ->setType(self::TYPE)
@@ -194,4 +193,61 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result, 0);
     }
+
+    /**
+     * test upserts
+     */
+    public function testUpserts()
+    {
+        $client = new Client(array(
+            "end_point" => self::END_POINT
+        ));
+
+        $type = "type_for_test";
+        $user_id = 1;
+
+        //1)新規Type を作成して count に 1 をセット ...1ループ目
+        //2)既存Type の count をインクリメント ...残り19ループ目
+        for ($i = 0; $i < 20; $i++) {
+
+            $client
+                ->setIndex(self::INDEX)
+                ->setType($type)
+                ->setId($user_id)
+                ->setBody([
+                    'script' => 'ctx._source.count += 1',
+                    'upsert' => [
+                        'count' => 1,
+                        'update_at' => time()
+                    ]
+                ])
+                ->upserts();
+        }
+
+        sleep(5);
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType($type)
+            ->search()
+            ->getHitCount();
+
+        //データ件数が1件であることを確認
+        //echo "----- 件数=" . $result . "\n";
+        $this->assertEquals($result, 1);
+
+        $result = $client
+            ->setIndex(self::INDEX)
+            ->setType($type)
+            ->createFilter()
+            ->attach()
+            ->search();
+
+        $source = $result[0]->getSource();
+
+        //カウントが20までインクリメントされていることを確認
+        //echo "----- カウント=" . $source['count'] . "\n";
+        $this->assertEquals($source['count'], 20);
+    }
+
 }
