@@ -159,6 +159,21 @@ class Client extends BaseClient implements ClientInterface
     /**
      * @return array
      */
+    public function upserts()
+    {
+        $result = $this
+            ->setMethod("POST")
+            ->setPath(implode("/", [$this->getIndex(), $this->getType(), $this->getId(), "_update"]))
+            ->send();
+
+        $this->_clear();
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
     public function delete()
     {
         $result =  $this
