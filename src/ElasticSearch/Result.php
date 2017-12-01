@@ -43,7 +43,7 @@ class Result implements ResultInterface, \ArrayAccess, \Iterator, \Countable
     /**
      * @param array $data
      */
-    public function setData(array $data)
+    public function setData($data = array())
     {
         $this->data = $data;
     }
