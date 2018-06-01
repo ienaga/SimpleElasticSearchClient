@@ -187,6 +187,7 @@ class Filter extends BaseSearch implements FilterInterface
 
         if (count($this->should)) {
             $query["should"] = $this->should;
+            $query["minimum_should_match"] = 1;
         }
 
         if (count($this->must_not)) {
